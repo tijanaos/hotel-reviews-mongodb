@@ -13,16 +13,16 @@ RAW_DATASET_PATH = PROJECT_ROOT / "data" / "raw" / "Hotel_Reviews.csv"
 PROCESSED_SAMPLE_PATH = PROJECT_ROOT / "data" / "processed" / "sample_processed_reviews.jsonl"
 
 
-CITIES = ["Amsterdam", "Barcelona", "London", "Milan", "Paris", "Vienna"]
+COUNTRY_TO_CITY = {
+    "Netherlands": "Amsterdam",
+    "United Kingdom": "London",
+    "France": "Paris",
+    "Spain": "Barcelona",
+    "Italy": "Milan",
+    "Austria": "Vienna",
+}
 
-COUNTRIES = [
-    "Netherlands",
-    "United Kingdom",
-    "France",
-    "Spain",
-    "Italy",
-    "Austria",
-]
+COUNTRIES = list(COUNTRY_TO_CITY.keys())
 
 STOP_WORDS = {
     "the", "and", "was", "were", "for", "with", "that", "this", "but", "not",
@@ -67,18 +67,26 @@ PROBLEM_KEYWORDS = {
 }
 
 
-def extract_city(address: str) -> str | None:
-    for city in CITIES:
-        if city.lower() in address.lower():
-            return city
-    return None
-
-
 def extract_country(address: str) -> str | None:
+    if not isinstance(address, str):
+        return None
+
+    normalized_address = address.strip()
+
     for country in COUNTRIES:
-        if address.endswith(country):
+        if normalized_address.endswith(country):
             return country
+
     return None
+
+
+def extract_city(address: str) -> str | None:
+    country = extract_country(address)
+
+    if country is None:
+        return None
+
+    return COUNTRY_TO_CITY[country]
 
 
 def parse_review_date(value: str) -> str | None:
