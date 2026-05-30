@@ -35,14 +35,35 @@ STOP_WORDS = {
 }
 
 PROBLEM_KEYWORDS = {
-    "noise": ["noise", "noisy", "loud", "street", "traffic", "sound"],
-    "small_room": ["small", "tiny", "cramped", "size"],
-    "cleanliness": ["dirty", "dust", "unclean", "cleanliness", "smell", "smelly"],
-    "uncomfortable_bed": ["uncomfortable", "bed", "mattress", "pillow"],
-    "wifi": ["wifi", "wi-fi", "internet", "connection"],
-    "air_conditioning": ["air", "conditioning", "ac", "heating", "temperature"],
-    "breakfast": ["breakfast", "food", "coffee"],
-    "staff": ["staff", "reception", "service", "rude"],
+    "noise": [
+        "noise", "noisy", "loud", "street noise", "traffic noise",
+        "sound", "soundproof", "disturbing sound"
+    ],
+    "small_room": [
+        "small room", "tiny room", "cramped", "room size",
+        "smaller room", "small"
+    ],
+    "cleanliness": [
+        "dirty", "dust", "unclean", "cleanliness", "smell", "smelly",
+        "mold", "stain", "stained"
+    ],
+    "uncomfortable_bed": [
+        "uncomfortable bed", "uncomfortable mattress", "hard bed",
+        "bad bed", "mattress", "pillow"
+    ],
+    "wifi": [
+        "wifi", "wi-fi", "internet", "connection"
+    ],
+    "air_conditioning": [
+        "air conditioning", "air conditioner", "ac", "heating",
+        "temperature", "too hot", "too cold"
+    ],
+    "breakfast": [
+        "breakfast", "food", "coffee"
+    ],
+    "staff": [
+        "staff", "reception", "service", "rude", "unfriendly"
+    ],
 }
 
 
@@ -100,6 +121,9 @@ def extract_keywords(text: str) -> list[str]:
 
     return keywords
 
+def contains_keyword(text: str, keyword: str) -> bool:
+    pattern = r"\b" + re.escape(keyword).replace(r"\ ", r"\s+") + r"\b"
+    return re.search(pattern, text) is not None
 
 def detect_problem_categories(negative_review: str) -> list[str]:
     if not isinstance(negative_review, str):
@@ -112,7 +136,7 @@ def detect_problem_categories(negative_review: str) -> list[str]:
     detected_categories = []
 
     for category, keywords in PROBLEM_KEYWORDS.items():
-        if any(keyword in text for keyword in keywords):
+        if any(contains_keyword(text, keyword) for keyword in keywords):
             detected_categories.append(category)
 
     return detected_categories
