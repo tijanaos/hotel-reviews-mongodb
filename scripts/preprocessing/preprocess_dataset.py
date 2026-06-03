@@ -1,7 +1,6 @@
 from pathlib import Path
 import ast
 import json
-import re
 from datetime import datetime
 
 import pandas as pd
@@ -23,49 +22,6 @@ COUNTRY_TO_CITY = {
 }
 
 COUNTRIES = list(COUNTRY_TO_CITY.keys())
-
-STOP_WORDS = {
-    "the", "and", "was", "were", "for", "with", "that", "this", "but", "not",
-    "you", "are", "had", "have", "has", "very", "all", "from", "they", "our",
-    "there", "their", "would", "could", "should", "about", "just", "too",
-    "into", "out", "what", "when", "where", "which", "then", "than", "been",
-    "more", "some", "only", "also", "because", "your", "them", "did", "didn",
-    "don", "does", "doesn", "isn", "wasn", "weren", "hotel", "room", "stay",
-    "stayed", "night", "nights", "one", "two", "get", "got", "even"
-}
-
-PROBLEM_KEYWORDS = {
-    "noise": [
-        "noise", "noisy", "loud", "street noise", "traffic noise",
-        "sound", "soundproof", "disturbing sound"
-    ],
-    "small_room": [
-        "small room", "tiny room", "cramped", "room size",
-        "smaller room", "small"
-    ],
-    "cleanliness": [
-        "dirty", "dust", "unclean", "cleanliness", "smell", "smelly",
-        "mold", "stain", "stained"
-    ],
-    "uncomfortable_bed": [
-        "uncomfortable bed", "uncomfortable mattress", "hard bed",
-        "bad bed", "mattress", "pillow"
-    ],
-    "wifi": [
-        "wifi", "wi-fi", "internet", "connection"
-    ],
-    "air_conditioning": [
-        "air conditioning", "air conditioner", "ac", "heating",
-        "temperature", "too hot", "too cold"
-    ],
-    "breakfast": [
-        "breakfast", "food", "coffee"
-    ],
-    "staff": [
-        "staff", "reception", "service", "rude", "unfriendly"
-    ],
-}
-
 
 def extract_country(address: str) -> str | None:
     if not isinstance(address, str):
@@ -89,18 +45,17 @@ def extract_city(address: str) -> str | None:
     return COUNTRY_TO_CITY[country]
 
 
-def parse_review_date(value: str) -> str | None:
+def parse_review_date(value: str) -> datetime | None:
     try:
-        parsed_date = datetime.strptime(value, "%m/%d/%Y")
-        return parsed_date.date().isoformat()
+        return datetime.strptime(value, "%m/%d/%Y")
     except ValueError:
         return None
 
 
 def parse_days_since_review(value: str) -> int | None:
-    match = re.search(r"\d+", str(value))
-    if match:
-        return int(match.group())
+    digits = "".join(ch for ch in str(value) if ch.isdigit())
+    if digits:
+        return int(digits)
     return None
 
 
@@ -110,44 +65,6 @@ def parse_tags(value: str) -> list[str]:
         return [tag.strip() for tag in tags]
     except (ValueError, SyntaxError):
         return []
-
-
-def extract_keywords(text: str) -> list[str]:
-    if not isinstance(text, str):
-        return []
-
-    if text.strip().lower() == "no negative":
-        return []
-
-    words = re.findall(r"[a-zA-Z]+", text.lower())
-
-    keywords = [
-        word
-        for word in words
-        if len(word) > 2 and word not in STOP_WORDS
-    ]
-
-    return keywords
-
-def contains_keyword(text: str, keyword: str) -> bool:
-    pattern = r"\b" + re.escape(keyword).replace(r"\ ", r"\s+") + r"\b"
-    return re.search(pattern, text) is not None
-
-def detect_problem_categories(negative_review: str) -> list[str]:
-    if not isinstance(negative_review, str):
-        return []
-
-    if negative_review.strip().lower() == "no negative":
-        return []
-
-    text = negative_review.lower()
-    detected_categories = []
-
-    for category, keywords in PROBLEM_KEYWORDS.items():
-        if any(contains_keyword(text, keyword) for keyword in keywords):
-            detected_categories.append(category)
-
-    return detected_categories
 
 
 def transform_row(row: pd.Series) -> dict:
@@ -166,8 +83,6 @@ def transform_row(row: pd.Series) -> dict:
 
     review_date = parse_review_date(row["Review_Date"])
     tags = parse_tags(row["Tags"])
-    negative_keywords = extract_keywords(row["Negative_Review"])
-    problem_categories = detect_problem_categories(row["Negative_Review"])
 
     return {
         "hotel": {
@@ -191,10 +106,14 @@ def transform_row(row: pd.Series) -> dict:
             "reviewer_total_reviews": int(row["Total_Number_of_Reviews_Reviewer_Has_Given"]),
             "tags": tags,
             "days_since_review": parse_days_since_review(row["days_since_review"]),
-            "negative_keywords": negative_keywords,
-            "problem_categories": problem_categories,
         }
     }
+
+
+def serialize_for_json(value):
+    if isinstance(value, datetime):
+        return value.isoformat()
+    raise TypeError(f"Object of type {type(value).__name__} is not JSON serializable")
 
 
 def main():
@@ -211,14 +130,16 @@ def main():
     with open(PROCESSED_SAMPLE_PATH, "w", encoding="utf-8") as output_file:
         for _, row in tqdm(df.iterrows(), total=len(df)):
             transformed = transform_row(row)
-            output_file.write(json.dumps(transformed, ensure_ascii=False) + "\n")
+            output_file.write(
+                json.dumps(transformed, ensure_ascii=False, default=serialize_for_json) + "\n"
+            )
 
     print(f"\nProcessed sample saved to: {PROCESSED_SAMPLE_PATH}")
 
     first_transformed_row = transform_row(df.iloc[0])
 
     print("\nExample transformed document:")
-    print(json.dumps(first_transformed_row, indent=2, ensure_ascii=False))
+    print(json.dumps(first_transformed_row, indent=2, ensure_ascii=False, default=serialize_for_json))
 
 
 if __name__ == "__main__":
