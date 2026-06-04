@@ -1,0 +1,88 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2757
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \{\
+    "_id" : "bathroom",\
+    "count" : 15.0\
+\}\
+\{\
+    "_id" : "bed",\
+    "count" : 12.0\
+\}\
+\{\
+    "_id" : "shower",\
+    "count" : 11.0\
+\}\
+\{\
+    "_id" : "staff",\
+    "count" : 11.0\
+\}\
+\{\
+    "_id" : "breakfast",\
+    "count" : 10.0\
+\}\
+\{\
+    "_id" : "check",\
+    "count" : 10.0\
+\}\
+\{\
+    "_id" : "floor",\
+    "count" : 10.0\
+\}\
+\{\
+    "_id" : "construction",\
+    "count" : 9.0\
+\}\
+\{\
+    "_id" : "night",\
+    "count" : 9.0\
+\}\
+\{\
+    "_id" : "work",\
+    "count" : 8.0\
+\}\
+\{\
+    "_id" : "area",\
+    "count" : 7.0\
+\}\
+\{\
+    "_id" : "building",\
+    "count" : 7.0\
+\}\
+\{\
+    "_id" : "nothing",\
+    "count" : 7.0\
+\}\
+\{\
+    "_id" : "service",\
+    "count" : 7.0\
+\}\
+\{\
+    "_id" : "stay",\
+    "count" : 7.0\
+\}\
+\{\
+    "_id" : "booking",\
+    "count" : 6.0\
+\}\
+\{\
+    "_id" : "doors",\
+    "count" : 6.0\
+\}\
+\{\
+    "_id" : "reception",\
+    "count" : 6.0\
+\}\
+\{\
+    "_id" : "restaurant",\
+    "count" : 6.0\
+\}\
+\{\
+    "_id" : "someone",\
+    "count" : 6.0\
+\}\
+}

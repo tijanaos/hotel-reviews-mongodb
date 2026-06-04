@@ -1,0 +1,143 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2757
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \{\
+    "year" : NumberInt(2015),\
+    "top_10_tags" : [\
+        \{\
+            "tag" : "Leisure trip",\
+            "count" : NumberInt(55)\
+        \},\
+        \{\
+            "tag" : "Duplex Double Room",\
+            "count" : NumberInt(51)\
+        \},\
+        \{\
+            "tag" : "Couple",\
+            "count" : NumberInt(46)\
+        \},\
+        \{\
+            "tag" : "Submitted from a mobile device",\
+            "count" : NumberInt(40)\
+        \},\
+        \{\
+            "tag" : "Stayed 3 nights",\
+            "count" : NumberInt(25)\
+        \},\
+        \{\
+            "tag" : "Stayed 4 nights",\
+            "count" : NumberInt(14)\
+        \},\
+        \{\
+            "tag" : "Stayed 2 nights",\
+            "count" : NumberInt(11)\
+        \},\
+        \{\
+            "tag" : "Large King Room",\
+            "count" : NumberInt(7)\
+        \},\
+        \{\
+            "tag" : "Stayed 1 night",\
+            "count" : NumberInt(5)\
+        \},\
+        \{\
+            "tag" : "Solo traveler",\
+            "count" : NumberInt(5)\
+        \}\
+    ]\
+\}\
+\{\
+    "year" : NumberInt(2016),\
+    "top_10_tags" : [\
+        \{\
+            "tag" : "Leisure trip",\
+            "count" : NumberInt(75)\
+        \},\
+        \{\
+            "tag" : "Couple",\
+            "count" : NumberInt(68)\
+        \},\
+        \{\
+            "tag" : "Duplex Double Room",\
+            "count" : NumberInt(60)\
+        \},\
+        \{\
+            "tag" : "Submitted from a mobile device",\
+            "count" : NumberInt(55)\
+        \},\
+        \{\
+            "tag" : "Stayed 3 nights",\
+            "count" : NumberInt(32)\
+        \},\
+        \{\
+            "tag" : "Stayed 2 nights",\
+            "count" : NumberInt(21)\
+        \},\
+        \{\
+            "tag" : "Stayed 4 nights",\
+            "count" : NumberInt(16)\
+        \},\
+        \{\
+            "tag" : "Large King Room",\
+            "count" : NumberInt(12)\
+        \},\
+        \{\
+            "tag" : "Group",\
+            "count" : NumberInt(7)\
+        \},\
+        \{\
+            "tag" : "Duplex Twin Room",\
+            "count" : NumberInt(6)\
+        \}\
+    ]\
+\}\
+\{\
+    "year" : NumberInt(2017),\
+    "top_10_tags" : [\
+        \{\
+            "tag" : "Leisure trip",\
+            "count" : NumberInt(45)\
+        \},\
+        \{\
+            "tag" : "Duplex Double Room",\
+            "count" : NumberInt(40)\
+        \},\
+        \{\
+            "tag" : "Submitted from a mobile device",\
+            "count" : NumberInt(37)\
+        \},\
+        \{\
+            "tag" : "Couple",\
+            "count" : NumberInt(28)\
+        \},\
+        \{\
+            "tag" : "Stayed 2 nights",\
+            "count" : NumberInt(20)\
+        \},\
+        \{\
+            "tag" : "Stayed 3 nights",\
+            "count" : NumberInt(13)\
+        \},\
+        \{\
+            "tag" : "Stayed 1 night",\
+            "count" : NumberInt(9)\
+        \},\
+        \{\
+            "tag" : "Group",\
+            "count" : NumberInt(8)\
+        \},\
+        \{\
+            "tag" : "Solo traveler",\
+            "count" : NumberInt(7)\
+        \},\
+        \{\
+            "tag" : "Family with young children",\
+            "count" : NumberInt(5)\
+        \}\
+    ]\
+\}\
+}
