@@ -1,0 +1,101 @@
+[
+  {
+    $lookup: {
+      from: "v1_hotels",
+      localField: "hotel_id",
+      foreignField: "_id",
+      as: "hotel"
+    }
+  },
+  {
+    $unwind: "$hotel"
+  },
+  {
+    $setWindowFields: {
+      partitionBy: "$hotel_id",
+      sortBy: {
+        review_date: -1
+      },
+      output: {
+        review_rank: {
+          $documentNumber: {}
+        }
+      }
+    }
+  },
+  {
+    $match: {
+      review_rank: {
+        $lte: 10
+      }
+    }
+  },
+  {
+    $group: {
+      _id: "$hotel._id",
+
+      name: {
+        $first: "$hotel.name"
+      },
+      address: {
+        $first: "$hotel.address"
+      },
+      city: {
+        $first: "$hotel.city"
+      },
+      country: {
+        $first: "$hotel.country"
+      },
+      average_score: {
+        $first: "$hotel.average_score"
+      },
+      total_number_of_reviews: {
+        $first: "$hotel.total_number_of_reviews"
+      },
+
+      recent_average_score: {
+        $avg: "$reviewer_score"
+      },
+
+      recent_reviews: {
+        $push: {
+          review_id: "$_id",
+          review_date: "$review_date",
+          reviewer_nationality: "$reviewer_nationality",
+          reviewer_score: "$reviewer_score",
+          positive_review: "$positive_review",
+          negative_review: "$negative_review",
+          positive_word_count: "$positive_word_count",
+          negative_word_count: "$negative_word_count",
+          tags: "$tags"
+        }
+      }
+    }
+  },
+  {
+    $project: {
+      name: 1,
+      address: 1,
+      city: 1,
+      country: 1,
+      average_score: 1,
+      total_number_of_reviews: 1,
+
+      recent_average_score: {
+        $round: ["$recent_average_score", 2]
+      },
+
+      recent_reviews: 1,
+
+      schema_pattern: "subset",
+      subset_description: "Hotel document contains only the 10 most recent reviews."
+    }
+  },
+  {
+    $merge: {
+      into: "v2_hotels_recent_reviews",
+      whenMatched: "replace",
+      whenNotMatched: "insert"
+    }
+  }
+]

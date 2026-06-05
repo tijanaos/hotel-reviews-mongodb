@@ -1,0 +1,120 @@
+db.v2_reviews_common_problems.aggregate([
+  {
+    $match: {
+      "hotel.city": "Amsterdam",
+      "negative_problem_attributes.problem_type": {
+        $in: [
+          "noise",
+          "small_room",
+          "cleanliness",
+          "bed",
+          "air_conditioning",
+          "wifi"
+        ]
+      }
+    }
+  },
+  {
+    $unwind: "$negative_problem_attributes"
+  },
+  {
+    $match: {
+      "negative_problem_attributes.problem_type": {
+        $in: [
+          "noise",
+          "small_room",
+          "cleanliness",
+          "bed",
+          "air_conditioning",
+          "wifi"
+        ]
+      }
+    }
+  },
+  {
+    $group: {
+      _id: {
+        hotel_id: "$hotel.hotel_id",
+        problem_type: "$negative_problem_attributes.problem_type"
+      },
+      hotel_name: {
+        $first: "$hotel.name"
+      },
+      address: {
+        $first: "$hotel.address"
+      },
+      city: {
+        $first: "$hotel.city"
+      },
+      country: {
+        $first: "$hotel.country"
+      },
+      total_hotel_reviews: {
+        $first: "$hotel.total_hotel_reviews"
+      },
+      problem_review_count: {
+        $sum: 1
+      },
+      average_problem_reviewer_score: {
+        $avg: "$reviewer_score"
+      }
+    }
+  },
+  {
+    $addFields: {
+      problem_review_percentage: {
+        $multiply: [
+          {
+            $divide: [
+              "$problem_review_count",
+              "$total_hotel_reviews"
+            ]
+          },
+          100
+        ]
+      }
+    }
+  },
+  {
+    $match: {
+      problem_review_count: {
+        $gte: 10
+      }
+    }
+  },
+  {
+    $sort: {
+      problem_review_percentage: -1,
+      problem_review_count: -1,
+      average_problem_reviewer_score: 1
+    }
+  },
+  {
+    $limit: 20
+  },
+  {
+    $project: {
+      _id: 0,
+      hotel_id: "$_id.hotel_id",
+      hotel_name: 1,
+      address: 1,
+      city: 1,
+      country: 1,
+      problem_type: "$_id.problem_type",
+      total_hotel_reviews: 1,
+      problem_review_count: 1,
+      problem_review_percentage: {
+        $round: [
+          "$problem_review_percentage",
+          2
+        ]
+      },
+      average_problem_reviewer_score: {
+        $round: [
+          "$average_problem_reviewer_score",
+          2
+        ]
+      }
+    }
+  }
+]);

@@ -1,0 +1,120 @@
+[{
+  "hotel_name": "The Toren",
+  "address": "Keizersgracht 164 Amsterdam City Center 1015 CZ Amsterdam Netherlands",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "review_count": 254,
+  "hotel_id": {
+    "$oid": "6a1ffc17ff73684035c731fb"
+  },
+  "guest_type": "Couple",
+  "average_reviewer_score": 9.53
+},
+{
+  "hotel_name": "Pillows Anna van den Vondel Amsterdam",
+  "address": "Anna van den Vondelstraat 6 Oud West 1054 GZ Amsterdam Netherlands",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "review_count": 30,
+  "hotel_id": {
+    "$oid": "6a1ffc17ff73684035c7310d"
+  },
+  "guest_type": "Couple",
+  "average_reviewer_score": 9.48
+},
+{
+  "hotel_name": "Waldorf Astoria Amsterdam",
+  "address": "Herengracht 542 556 Amsterdam City Center 1017 CG Amsterdam Netherlands",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "review_count": 93,
+  "hotel_id": {
+    "$oid": "6a1ffc17ff73684035c731ce"
+  },
+  "guest_type": "Couple",
+  "average_reviewer_score": 9.46
+},
+{
+  "hotel_name": "Luxury Suites Amsterdam",
+  "address": "Oudeschans 75 Amsterdam City Center 1011 KW Amsterdam Netherlands",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "review_count": 123,
+  "hotel_id": {
+    "$oid": "6a1ffc17ff73684035c73257"
+  },
+  "guest_type": "Couple",
+  "average_reviewer_score": 9.45
+},
+{
+  "hotel_name": "The Hoxton Amsterdam",
+  "address": "Herengracht 255 Amsterdam City Center 1016 BJ Amsterdam Netherlands",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "review_count": 248,
+  "hotel_id": {
+    "$oid": "6a1ffc17ff73684035c731cb"
+  },
+  "guest_type": "Couple",
+  "average_reviewer_score": 9.44
+},
+{
+  "hotel_name": "Canal House",
+  "address": "Keizersgracht 148 Amsterdam City Center 1015 CX Amsterdam Netherlands",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "review_count": 141,
+  "hotel_id": {
+    "$oid": "6a1ffc17ff73684035c731fa"
+  },
+  "guest_type": "Couple",
+  "average_reviewer_score": 9.41
+},
+{
+  "hotel_name": "Banks Mansion All Inclusive Hotel",
+  "address": "Herengracht 519 525 Amsterdam City Center 1017 BV Amsterdam Netherlands",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "review_count": 220,
+  "hotel_id": {
+    "$oid": "6a1ffc17ff73684035c731cd"
+  },
+  "guest_type": "Couple",
+  "average_reviewer_score": 9.37
+},
+{
+  "hotel_name": "Hotel V Nesplein",
+  "address": "Nes 49 Amsterdam City Center 1012 KD Amsterdam Netherlands",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "review_count": 309,
+  "hotel_id": {
+    "$oid": "6a1ffc17ff73684035c73241"
+  },
+  "guest_type": "Couple",
+  "average_reviewer_score": 9.36
+},
+{
+  "hotel_name": "Hotel V Fizeaustraat",
+  "address": "Fizeaustraat 2 Oost 1097 SC Amsterdam Netherlands",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "review_count": 232,
+  "hotel_id": {
+    "$oid": "6a1ffc17ff73684035c731a1"
+  },
+  "guest_type": "Couple",
+  "average_reviewer_score": 9.36
+},
+{
+  "hotel_name": "Hotel Esther a",
+  "address": "Singel 303 309 Amsterdam City Center 1012 WJ Amsterdam Netherlands",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "review_count": 1103,
+  "hotel_id": {
+    "$oid": "6a1ffc17ff73684035c732f8"
+  },
+  "guest_type": "Couple",
+  "average_reviewer_score": 9.31
+}]

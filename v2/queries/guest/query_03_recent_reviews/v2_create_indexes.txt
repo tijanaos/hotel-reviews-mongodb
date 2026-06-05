@@ -1,0 +1,9 @@
+db.v2_hotels_recent_reviews.createIndex(
+  {
+    name: 1,
+    city: 1
+  },
+  {
+    name: "idx_hotel_name_city"
+  }
+);
