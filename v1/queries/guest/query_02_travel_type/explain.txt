@@ -1,0 +1,311 @@
+{
+    "explainVersion" : "1",
+    "stages" : [
+        {
+            "$cursor" : {
+                "queryPlanner" : {
+                    "namespace" : "hotel_reviews.v1_reviews",
+                    "indexFilterSet" : false,
+                    "parsedQuery" : {
+                        "tags" : {
+                            "$eq" : "Couple"
+                        }
+                    },
+                    "queryHash" : "4246D58B",
+                    "planCacheKey" : "4246D58B",
+                    "optimizationTimeMillis" : 0,
+                    "maxIndexedOrSolutionsReached" : false,
+                    "maxIndexedAndSolutionsReached" : false,
+                    "maxScansToExplodeReached" : false,
+                    "winningPlan" : {
+                        "stage" : "PROJECTION_SIMPLE",
+                        "transformBy" : {
+                            "hotel_id" : 1,
+                            "reviewer_score" : 1,
+                            "_id" : 0
+                        },
+                        "inputStage" : {
+                            "stage" : "COLLSCAN",
+                            "filter" : {
+                                "tags" : {
+                                    "$eq" : "Couple"
+                                }
+                            },
+                            "direction" : "forward"
+                        }
+                    },
+                    "rejectedPlans" : [
+
+                    ]
+                },
+                "executionStats" : {
+                    "executionSuccess" : true,
+                    "nReturned" : 252294,
+                    "executionTimeMillis" : 13183,
+                    "totalKeysExamined" : 0,
+                    "totalDocsExamined" : 515738,
+                    "executionStages" : {
+                        "stage" : "PROJECTION_SIMPLE",
+                        "nReturned" : 252294,
+                        "executionTimeMillisEstimate" : 43,
+                        "works" : 515739,
+                        "advanced" : 252294,
+                        "needTime" : 263444,
+                        "needYield" : 0,
+                        "saveState" : 529,
+                        "restoreState" : 529,
+                        "isEOF" : 1,
+                        "transformBy" : {
+                            "hotel_id" : 1,
+                            "reviewer_score" : 1,
+                            "_id" : 0
+                        },
+                        "inputStage" : {
+                            "stage" : "COLLSCAN",
+                            "filter" : {
+                                "tags" : {
+                                    "$eq" : "Couple"
+                                }
+                            },
+                            "nReturned" : 252294,
+                            "executionTimeMillisEstimate" : 39,
+                            "works" : 515739,
+                            "advanced" : 252294,
+                            "needTime" : 263444,
+                            "needYield" : 0,
+                            "saveState" : 529,
+                            "restoreState" : 529,
+                            "isEOF" : 1,
+                            "direction" : "forward",
+                            "docsExamined" : 515738
+                        }
+                    }
+                }
+            },
+            "nReturned" : 252294,
+            "executionTimeMillisEstimate" : 402
+        },
+        {
+            "$lookup" : {
+                "from" : "v1_hotels",
+                "as" : "hotel",
+                "localField" : "hotel_id",
+                "foreignField" : "_id",
+                "let" : {
+
+                },
+                "pipeline" : [
+                    {
+                        "$match" : {
+                            "city" : {
+                                "$eq" : "Amsterdam"
+                            }
+                        }
+                    }
+                ],
+                "unwinding" : {
+                    "preserveNullAndEmptyArrays" : false
+                }
+            },
+            "totalDocsExamined" : 252295,
+            "totalKeysExamined" : 252295,
+            "collectionScans" : 0,
+            "indexesUsed" : [
+                "_id_"
+            ],
+            "nReturned" : 29347,
+            "executionTimeMillisEstimate" : 13178
+        },
+        {
+            "$group" : {
+                "_id" : "$hotel._id",
+                "hotel_name" : {
+                    "$first" : "$hotel.name"
+                },
+                "address" : {
+                    "$first" : "$hotel.address"
+                },
+                "city" : {
+                    "$first" : "$hotel.city"
+                },
+                "country" : {
+                    "$first" : "$hotel.country"
+                },
+                "average_reviewer_score" : {
+                    "$avg" : "$reviewer_score"
+                },
+                "review_count" : {
+                    "$sum" : {
+                        "$const" : 1.0
+                    }
+                }
+            },
+            "maxAccumulatorMemoryUsageBytes" : {
+                "hotel_name" : 11670,
+                "address" : 15860,
+                "city" : 7560,
+                "country" : 7560,
+                "average_reviewer_score" : 10920,
+                "review_count" : 10080
+            },
+            "totalOutputDataSizeBytes" : 78455,
+            "usedDisk" : false,
+            "spills" : 0,
+            "spilledDataStorageSize" : 0,
+            "numBytesSpilledEstimate" : 0,
+            "spilledRecords" : 0,
+            "nReturned" : 105,
+            "executionTimeMillisEstimate" : 13178
+        },
+        {
+            "$match" : {
+                "review_count" : {
+                    "$gte" : 20.0
+                }
+            },
+            "nReturned" : 103,
+            "executionTimeMillisEstimate" : 13178
+        },
+        {
+            "$sort" : {
+                "sortKey" : {
+                    "average_reviewer_score" : -1,
+                    "review_count" : -1
+                },
+                "limit" : 10
+            },
+            "totalDataSizeSortedBytesEstimate" : 8217,
+            "usedDisk" : false,
+            "spills" : 0,
+            "spilledDataStorageSize" : 0,
+            "nReturned" : 10,
+            "executionTimeMillisEstimate" : 13178
+        },
+        {
+            "$project" : {
+                "hotel_name" : true,
+                "address" : true,
+                "city" : true,
+                "country" : true,
+                "review_count" : true,
+                "hotel_id" : "$_id",
+                "guest_type" : {
+                    "$const" : "Couple"
+                },
+                "average_reviewer_score" : {
+                    "$round" : [
+                        "$average_reviewer_score",
+                        {
+                            "$const" : 2.0
+                        }
+                    ]
+                },
+                "_id" : false
+            },
+            "nReturned" : 10,
+            "executionTimeMillisEstimate" : 13178
+        }
+    ],
+    "serverInfo" : {
+        "host" : "0b4c35b42167",
+        "port" : 27017,
+        "version" : "7.0.34",
+        "gitVersion" : "ed9a6630253d3bc301e5ef19606704715d1e2066"
+    },
+    "serverParameters" : {
+        "internalQueryFacetBufferSizeBytes" : 104857600,
+        "internalQueryFacetMaxOutputDocSizeBytes" : 104857600,
+        "internalLookupStageIntermediateDocumentMaxSizeBytes" : 104857600,
+        "internalDocumentSourceGroupMaxMemoryBytes" : 104857600,
+        "internalQueryMaxBlockingSortMemoryUsageBytes" : 104857600,
+        "internalQueryProhibitBlockingMergeOnMongoS" : 0,
+        "internalQueryMaxAddToSetBytes" : 104857600,
+        "internalDocumentSourceSetWindowFieldsMaxMemoryBytes" : 104857600,
+        "internalQueryFrameworkControl" : "forceClassicEngine"
+    },
+    "command" : {
+        "aggregate" : "v1_reviews",
+        "pipeline" : [
+            {
+                "$lookup" : {
+                    "from" : "v1_hotels",
+                    "localField" : "hotel_id",
+                    "foreignField" : "_id",
+                    "as" : "hotel"
+                }
+            },
+            {
+                "$unwind" : "$hotel"
+            },
+            {
+                "$match" : {
+                    "hotel.city" : "Amsterdam",
+                    "tags" : "Couple"
+                }
+            },
+            {
+                "$group" : {
+                    "_id" : "$hotel._id",
+                    "hotel_name" : {
+                        "$first" : "$hotel.name"
+                    },
+                    "address" : {
+                        "$first" : "$hotel.address"
+                    },
+                    "city" : {
+                        "$first" : "$hotel.city"
+                    },
+                    "country" : {
+                        "$first" : "$hotel.country"
+                    },
+                    "average_reviewer_score" : {
+                        "$avg" : "$reviewer_score"
+                    },
+                    "review_count" : {
+                        "$sum" : 1.0
+                    }
+                }
+            },
+            {
+                "$match" : {
+                    "review_count" : {
+                        "$gte" : 20.0
+                    }
+                }
+            },
+            {
+                "$sort" : {
+                    "average_reviewer_score" : -1.0,
+                    "review_count" : -1.0
+                }
+            },
+            {
+                "$limit" : 10.0
+            },
+            {
+                "$project" : {
+                    "_id" : 0.0,
+                    "hotel_id" : "$_id",
+                    "hotel_name" : 1.0,
+                    "address" : 1.0,
+                    "city" : 1.0,
+                    "country" : 1.0,
+                    "guest_type" : "Couple",
+                    "average_reviewer_score" : {
+                        "$round" : [
+                            "$average_reviewer_score",
+                            2.0
+                        ]
+                    },
+                    "review_count" : 1.0
+                }
+            }
+        ],
+        "maxTimeMS" : 0,
+        "cursor" : {
+
+        },
+        "$db" : "hotel_reviews"
+    },
+    "ok" : 1.0
+}

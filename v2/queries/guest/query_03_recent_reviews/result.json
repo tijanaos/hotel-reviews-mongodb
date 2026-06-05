@@ -1,9 +1,16 @@
-{
-    "address" : " s Gravesandestraat 55 Oost 1092 AA Amsterdam Netherlands",
-    "city" : "Amsterdam",
-    "country" : "Netherlands",
-    "total_number_of_reviews" : 1403,
-    "recent_reviews" : [
+[{
+    "recent_average_score" : 6.89,
+    "hotel" : {
+        "hotel_id" : "6a1ffc17ff73684035c72dee",
+        "hotel_name" : "Hotel Arena",
+        "address" : " s Gravesandestraat 55 Oost 1092 AA Amsterdam Netherlands",
+        "city" : "Amsterdam",
+        "country" : "Netherlands",
+        "total_average_score" : 7.7,
+        "total_number_of_reviews" : 1403
+    },
+    "recent_review_count" : 10,
+    "latest_reviews" : [
         {
             "review_id" : "6a1ffc18ff73684035c733c4",
             "review_date" : "2017-08-03T00:00:00.000+0000",
@@ -170,10 +177,6 @@
                 "Submitted from a mobile device"
             ]
         }
-    ],
-    "recent_average_score" : 6.89,
-    "hotel_id" : "6a1ffc17ff73684035c72dee",
-    "hotel_name" : "Hotel Arena",
-    "total_average_score" : 7.7,
-    "recent_review_count" : 10
+    ]
 }
+]

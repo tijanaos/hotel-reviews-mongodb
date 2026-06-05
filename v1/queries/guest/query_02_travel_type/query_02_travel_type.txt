@@ -1,3 +1,4 @@
+db.v1_reviews.aggregate(
 [
   {
     $lookup: {
@@ -56,4 +57,4 @@
       review_count: 1
     }
   }
-]
+]);

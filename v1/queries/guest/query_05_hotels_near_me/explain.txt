@@ -1,0 +1,616 @@
+{
+    "explainVersion" : "1",
+    "stages" : [
+        {
+            "$cursor" : {
+                "queryPlanner" : {
+                    "namespace" : "hotel_reviews.v1_hotels",
+                    "indexFilterSet" : false,
+                    "parsedQuery" : {
+                        "$and" : [
+                            {
+                                "total_number_of_reviews" : {
+                                    "$gte" : 100.0
+                                }
+                            },
+                            {
+                                "location" : {
+                                    "$not" : {
+                                        "$eq" : null
+                                    }
+                                }
+                            },
+                            {
+                                "location.coordinates.0" : {
+                                    "$not" : {
+                                        "$eq" : null
+                                    }
+                                }
+                            },
+                            {
+                                "location.coordinates.1" : {
+                                    "$not" : {
+                                        "$eq" : null
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "queryHash" : "07FADF46",
+                    "planCacheKey" : "C69B3286",
+                    "optimizationTimeMillis" : 0,
+                    "maxIndexedOrSolutionsReached" : false,
+                    "maxIndexedAndSolutionsReached" : false,
+                    "maxScansToExplodeReached" : false,
+                    "winningPlan" : {
+                        "stage" : "PROJECTION_SIMPLE",
+                        "transformBy" : {
+                            "_id" : 1,
+                            "address" : 1,
+                            "city" : 1,
+                            "country" : 1,
+                            "location" : 1,
+                            "name" : 1,
+                            "total_number_of_reviews" : 1
+                        },
+                        "inputStage" : {
+                            "stage" : "COLLSCAN",
+                            "filter" : {
+                                "$and" : [
+                                    {
+                                        "total_number_of_reviews" : {
+                                            "$gte" : 100.0
+                                        }
+                                    },
+                                    {
+                                        "location" : {
+                                            "$not" : {
+                                                "$eq" : null
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "location.coordinates.0" : {
+                                            "$not" : {
+                                                "$eq" : null
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "location.coordinates.1" : {
+                                            "$not" : {
+                                                "$eq" : null
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            "direction" : "forward"
+                        }
+                    },
+                    "rejectedPlans" : [
+
+                    ]
+                },
+                "executionStats" : {
+                    "executionSuccess" : true,
+                    "nReturned" : 1446,
+                    "executionTimeMillis" : 44538,
+                    "totalKeysExamined" : 0,
+                    "totalDocsExamined" : 1494,
+                    "executionStages" : {
+                        "stage" : "PROJECTION_SIMPLE",
+                        "nReturned" : 1446,
+                        "executionTimeMillisEstimate" : 0,
+                        "works" : 1495,
+                        "advanced" : 1446,
+                        "needTime" : 48,
+                        "needYield" : 0,
+                        "saveState" : 2,
+                        "restoreState" : 2,
+                        "isEOF" : 1,
+                        "transformBy" : {
+                            "_id" : 1,
+                            "address" : 1,
+                            "city" : 1,
+                            "country" : 1,
+                            "location" : 1,
+                            "name" : 1,
+                            "total_number_of_reviews" : 1
+                        },
+                        "inputStage" : {
+                            "stage" : "COLLSCAN",
+                            "filter" : {
+                                "$and" : [
+                                    {
+                                        "total_number_of_reviews" : {
+                                            "$gte" : 100.0
+                                        }
+                                    },
+                                    {
+                                        "location" : {
+                                            "$not" : {
+                                                "$eq" : null
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "location.coordinates.0" : {
+                                            "$not" : {
+                                                "$eq" : null
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "location.coordinates.1" : {
+                                            "$not" : {
+                                                "$eq" : null
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            "nReturned" : 1446,
+                            "executionTimeMillisEstimate" : 0,
+                            "works" : 1495,
+                            "advanced" : 1446,
+                            "needTime" : 48,
+                            "needYield" : 0,
+                            "saveState" : 2,
+                            "restoreState" : 2,
+                            "isEOF" : 1,
+                            "direction" : "forward",
+                            "docsExamined" : 1494
+                        }
+                    }
+                }
+            },
+            "nReturned" : 1446,
+            "executionTimeMillisEstimate" : 3
+        },
+        {
+            "$addFields" : {
+                "user_longitude" : {
+                    "$const" : 9.19
+                },
+                "user_latitude" : {
+                    "$const" : 45.4642
+                },
+                "hotel_longitude" : {
+                    "$arrayElemAt" : [
+                        "$location.coordinates",
+                        {
+                            "$const" : 0.0
+                        }
+                    ]
+                },
+                "hotel_latitude" : {
+                    "$arrayElemAt" : [
+                        "$location.coordinates",
+                        {
+                            "$const" : 1.0
+                        }
+                    ]
+                }
+            },
+            "nReturned" : 1446,
+            "executionTimeMillisEstimate" : 7
+        },
+        {
+            "$addFields" : {
+                "distance_km" : {
+                    "$let" : {
+                        "vars" : {
+                            "earth_radius_km" : {
+                                "$const" : 6371.0
+                            },
+                            "lat1_rad" : {
+                                "$degreesToRadians" : [
+                                    "$user_latitude"
+                                ]
+                            },
+                            "lat2_rad" : {
+                                "$degreesToRadians" : [
+                                    "$hotel_latitude"
+                                ]
+                            },
+                            "delta_lat_rad" : {
+                                "$degreesToRadians" : [
+                                    {
+                                        "$subtract" : [
+                                            "$hotel_latitude",
+                                            "$user_latitude"
+                                        ]
+                                    }
+                                ]
+                            },
+                            "delta_lng_rad" : {
+                                "$degreesToRadians" : [
+                                    {
+                                        "$subtract" : [
+                                            "$hotel_longitude",
+                                            "$user_longitude"
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        "in" : {
+                            "$multiply" : [
+                                "$$earth_radius_km",
+                                {
+                                    "$const" : 2.0
+                                },
+                                {
+                                    "$asin" : [
+                                        {
+                                            "$sqrt" : [
+                                                {
+                                                    "$add" : [
+                                                        {
+                                                            "$pow" : [
+                                                                {
+                                                                    "$sin" : [
+                                                                        {
+                                                                            "$divide" : [
+                                                                                "$$delta_lat_rad",
+                                                                                {
+                                                                                    "$const" : 2.0
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "$const" : 2.0
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "$multiply" : [
+                                                                {
+                                                                    "$cos" : [
+                                                                        "$$lat1_rad"
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "$cos" : [
+                                                                        "$$lat2_rad"
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "$pow" : [
+                                                                        {
+                                                                            "$sin" : [
+                                                                                {
+                                                                                    "$divide" : [
+                                                                                        "$$delta_lng_rad",
+                                                                                        {
+                                                                                            "$const" : 2.0
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "$const" : 2.0
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "nReturned" : 1446,
+            "executionTimeMillisEstimate" : 9
+        },
+        {
+            "$match" : {
+                "distance_km" : {
+                    "$lte" : 100.0
+                }
+            },
+            "nReturned" : 162,
+            "executionTimeMillisEstimate" : 9
+        },
+        {
+            "$lookup" : {
+                "from" : "v1_reviews",
+                "as" : "reviews",
+                "localField" : "_id",
+                "foreignField" : "hotel_id"
+            },
+            "totalDocsExamined" : 83549556,
+            "totalKeysExamined" : 0,
+            "collectionScans" : 162,
+            "indexesUsed" : [
+
+            ],
+            "nReturned" : 162,
+            "executionTimeMillisEstimate" : 44528
+        },
+        {
+            "$addFields" : {
+                "average_reviewer_score" : {
+                    "$avg" : [
+                        "$reviews.reviewer_score"
+                    ]
+                }
+            },
+            "nReturned" : 162,
+            "executionTimeMillisEstimate" : 44532
+        },
+        {
+            "$match" : {
+                "average_reviewer_score" : {
+                    "$gte" : 8.0
+                }
+            },
+            "nReturned" : 113,
+            "executionTimeMillisEstimate" : 44532
+        },
+        {
+            "$sort" : {
+                "sortKey" : {
+                    "distance_km" : 1,
+                    "average_reviewer_score" : -1,
+                    "total_number_of_reviews" : -1
+                },
+                "limit" : 10
+            },
+            "totalDataSizeSortedBytesEstimate" : 1913767,
+            "usedDisk" : false,
+            "spills" : 0,
+            "spilledDataStorageSize" : 0,
+            "nReturned" : 10,
+            "executionTimeMillisEstimate" : 44533
+        },
+        {
+            "$project" : {
+                "address" : true,
+                "city" : true,
+                "country" : true,
+                "total_number_of_reviews" : true,
+                "location" : true,
+                "hotel_id" : "$_id",
+                "hotel_name" : "$name",
+                "average_reviewer_score" : {
+                    "$round" : [
+                        "$average_reviewer_score",
+                        {
+                            "$const" : 2.0
+                        }
+                    ]
+                },
+                "distance_km" : {
+                    "$round" : [
+                        "$distance_km",
+                        {
+                            "$const" : 2.0
+                        }
+                    ]
+                },
+                "_id" : false
+            },
+            "nReturned" : 10,
+            "executionTimeMillisEstimate" : 44533
+        }
+    ],
+    "serverInfo" : {
+        "host" : "0b4c35b42167",
+        "port" : 27017,
+        "version" : "7.0.34",
+        "gitVersion" : "ed9a6630253d3bc301e5ef19606704715d1e2066"
+    },
+    "serverParameters" : {
+        "internalQueryFacetBufferSizeBytes" : 104857600,
+        "internalQueryFacetMaxOutputDocSizeBytes" : 104857600,
+        "internalLookupStageIntermediateDocumentMaxSizeBytes" : 104857600,
+        "internalDocumentSourceGroupMaxMemoryBytes" : 104857600,
+        "internalQueryMaxBlockingSortMemoryUsageBytes" : 104857600,
+        "internalQueryProhibitBlockingMergeOnMongoS" : 0,
+        "internalQueryMaxAddToSetBytes" : 104857600,
+        "internalDocumentSourceSetWindowFieldsMaxMemoryBytes" : 104857600,
+        "internalQueryFrameworkControl" : "forceClassicEngine"
+    },
+    "command" : {
+        "aggregate" : "v1_hotels",
+        "pipeline" : [
+            {
+                "$match" : {
+                    "location" : {
+                        "$ne" : null
+                    },
+                    "location.coordinates.0" : {
+                        "$ne" : null
+                    },
+                    "location.coordinates.1" : {
+                        "$ne" : null
+                    },
+                    "total_number_of_reviews" : {
+                        "$gte" : 100.0
+                    }
+                }
+            },
+            {
+                "$addFields" : {
+                    "user_longitude" : 9.19,
+                    "user_latitude" : 45.4642,
+                    "hotel_longitude" : {
+                        "$arrayElemAt" : [
+                            "$location.coordinates",
+                            0.0
+                        ]
+                    },
+                    "hotel_latitude" : {
+                        "$arrayElemAt" : [
+                            "$location.coordinates",
+                            1.0
+                        ]
+                    }
+                }
+            },
+            {
+                "$addFields" : {
+                    "distance_km" : {
+                        "$let" : {
+                            "vars" : {
+                                "earth_radius_km" : 6371.0,
+                                "lat1_rad" : {
+                                    "$degreesToRadians" : "$user_latitude"
+                                },
+                                "lat2_rad" : {
+                                    "$degreesToRadians" : "$hotel_latitude"
+                                },
+                                "delta_lat_rad" : {
+                                    "$degreesToRadians" : {
+                                        "$subtract" : [
+                                            "$hotel_latitude",
+                                            "$user_latitude"
+                                        ]
+                                    }
+                                },
+                                "delta_lng_rad" : {
+                                    "$degreesToRadians" : {
+                                        "$subtract" : [
+                                            "$hotel_longitude",
+                                            "$user_longitude"
+                                        ]
+                                    }
+                                }
+                            },
+                            "in" : {
+                                "$multiply" : [
+                                    "$$earth_radius_km",
+                                    2.0,
+                                    {
+                                        "$asin" : {
+                                            "$sqrt" : {
+                                                "$add" : [
+                                                    {
+                                                        "$pow" : [
+                                                            {
+                                                                "$sin" : {
+                                                                    "$divide" : [
+                                                                        "$$delta_lat_rad",
+                                                                        2.0
+                                                                    ]
+                                                                }
+                                                            },
+                                                            2.0
+                                                        ]
+                                                    },
+                                                    {
+                                                        "$multiply" : [
+                                                            {
+                                                                "$cos" : "$$lat1_rad"
+                                                            },
+                                                            {
+                                                                "$cos" : "$$lat2_rad"
+                                                            },
+                                                            {
+                                                                "$pow" : [
+                                                                    {
+                                                                        "$sin" : {
+                                                                            "$divide" : [
+                                                                                "$$delta_lng_rad",
+                                                                                2.0
+                                                                            ]
+                                                                        }
+                                                                    },
+                                                                    2.0
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "$match" : {
+                    "distance_km" : {
+                        "$lte" : 100.0
+                    }
+                }
+            },
+            {
+                "$lookup" : {
+                    "from" : "v1_reviews",
+                    "localField" : "_id",
+                    "foreignField" : "hotel_id",
+                    "as" : "reviews"
+                }
+            },
+            {
+                "$addFields" : {
+                    "average_reviewer_score" : {
+                        "$avg" : "$reviews.reviewer_score"
+                    }
+                }
+            },
+            {
+                "$match" : {
+                    "average_reviewer_score" : {
+                        "$gte" : 8.0
+                    }
+                }
+            },
+            {
+                "$sort" : {
+                    "distance_km" : 1.0,
+                    "average_reviewer_score" : -1.0,
+                    "total_number_of_reviews" : -1.0
+                }
+            },
+            {
+                "$limit" : 10.0
+            },
+            {
+                "$project" : {
+                    "_id" : 0.0,
+                    "hotel_id" : "$_id",
+                    "hotel_name" : "$name",
+                    "address" : 1.0,
+                    "city" : 1.0,
+                    "country" : 1.0,
+                    "average_reviewer_score" : {
+                        "$round" : [
+                            "$average_reviewer_score",
+                            2.0
+                        ]
+                    },
+                    "total_number_of_reviews" : 1.0,
+                    "distance_km" : {
+                        "$round" : [
+                            "$distance_km",
+                            2.0
+                        ]
+                    },
+                    "location" : 1.0
+                }
+            }
+        ],
+        "maxTimeMS" : 0,
+        "cursor" : {
+
+        },
+        "$db" : "hotel_reviews"
+    },
+    "ok" : 1.0
+}
