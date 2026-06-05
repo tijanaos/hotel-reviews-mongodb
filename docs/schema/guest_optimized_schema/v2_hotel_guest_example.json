@@ -1,0 +1,60 @@
+{
+  "_id": { "$oid": "64a1f2b3c4d5e6f7a8b9c0d1" },
+  "name": "Hotel Arena",
+  "address": "'s-Gravesandestraat 51 Oost, 1092 AA Amsterdam, Netherlands",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "average_score": 8.8,
+  "total_number_of_reviews": 1403,
+  "location": {
+    "type": "Point",
+    "coordinates": [4.9157, 52.3626]
+  },
+  "average_reviewer_score": 8.76,
+  "review_count": 1403,
+  "city_average_score": 8.31,
+  "reliability_score": 8.7182,
+  "recent_average_score": 8.92,
+  "recent_reviews": [
+    {
+      "review_date": { "$date": "2017-08-01T00:00:00Z" },
+      "reviewer_nationality": "United Kingdom",
+      "reviewer_score": 9.2,
+      "positive_review": "Fantastic location, very friendly staff and beautifully designed rooms.",
+      "negative_review": "Room was a bit small but perfectly functional.",
+      "positive_word_count": 12,
+      "negative_word_count": 9,
+      "tags": ["Leisure trip", "Couple", "Stayed 2 nights", "Submitted from a mobile device"]
+    },
+    {
+      "review_date": { "$date": "2017-07-28T00:00:00Z" },
+      "reviewer_nationality": "Netherlands",
+      "reviewer_score": 8.8,
+      "positive_review": "Great breakfast and lovely courtyard garden.",
+      "negative_review": "No Negative",
+      "positive_word_count": 7,
+      "negative_word_count": 0,
+      "tags": ["Leisure trip", "Solo traveler", "Stayed 1 night"]
+    }
+  ],
+  "problem_stats": [
+    {
+      "problem_type": "noise",
+      "count": 47,
+      "percentage": 3.35,
+      "avg_score": 7.2
+    },
+    {
+      "problem_type": "small_room",
+      "count": 38,
+      "percentage": 2.71,
+      "avg_score": 7.8
+    },
+    {
+      "problem_type": "wifi",
+      "count": 21,
+      "percentage": 1.50,
+      "avg_score": 7.5
+    }
+  ]
+}

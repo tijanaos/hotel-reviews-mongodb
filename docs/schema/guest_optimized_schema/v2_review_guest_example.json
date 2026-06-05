@@ -1,0 +1,12 @@
+{
+  "_id": { "$oid": "64b2a3c4d5e6f7a8b9c0d2e3" },
+  "hotel_id": { "$oid": "64a1f2b3c4d5e6f7a8b9c0d1" },
+  "hotel": {
+    "name": "Hotel Arena",
+    "address": "'s-Gravesandestraat 51 Oost, 1092 AA Amsterdam, Netherlands",
+    "city": "Amsterdam",
+    "country": "Netherlands"
+  },
+  "reviewer_score": 9.2,
+  "guest_types": ["couple", "leisure"]
+}
