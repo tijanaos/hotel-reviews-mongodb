@@ -1,4 +1,8 @@
-[
+// Q2 — Top hotels for a specific guest type in a city
+// v1: $lookup + $match on tags (raw string) + $group
+// v2: $match on embedded hotel.city + classified guest_types array on v2_reviews_guest
+
+db.v2_reviews_guest.aggregate([
   {
     $match: {
       "hotel.city": "Amsterdam",
@@ -7,8 +11,8 @@
   },
   {
     $group: {
-      _id: "$hotel.id",
-      hotel_name: { $first: "$hotel.name" },
+      _id: "$hotel_id",
+      name: { $first: "$hotel.name" },
       address: { $first: "$hotel.address" },
       city: { $first: "$hotel.city" },
       country: { $first: "$hotel.country" },
@@ -24,8 +28,7 @@
   {
     $sort: {
       average_reviewer_score: -1,
-      review_count: -1,
-      hotel_name: 1
+      review_count: -1
     }
   },
   {
@@ -35,15 +38,13 @@
     $project: {
       _id: 0,
       hotel_id: "$_id",
-      hotel_name: 1,
+      name: 1,
       address: 1,
       city: 1,
       country: 1,
       guest_type: "couple",
-      average_reviewer_score: {
-        $round: ["$average_reviewer_score", 2]
-      },
+      average_reviewer_score: { $round: ["$average_reviewer_score", 2] },
       review_count: 1
     }
   }
-]
+])

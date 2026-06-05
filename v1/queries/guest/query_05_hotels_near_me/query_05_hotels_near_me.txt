@@ -1,4 +1,4 @@
-[
+db.v1_hotels.aggregate([
   {
     $match: {
       location: { $ne: null },
@@ -100,14 +100,31 @@
   },
   {
     $match: {
-      distance_km: { $lte: 100 },
-      average_score: { $gte: 8.0 }
+      distance_km: { $lte: 100 }
+    }
+  },
+  {
+    $lookup: {
+      from: "v1_reviews",
+      localField: "_id",
+      foreignField: "hotel_id",
+      as: "reviews"
+    }
+  },
+  {
+    $addFields: {
+      average_reviewer_score: { $avg: "$reviews.reviewer_score" }
+    }
+  },
+  {
+    $match: {
+      average_reviewer_score: { $gte: 8.0 }
     }
   },
   {
     $sort: {
       distance_km: 1,
-      average_score: -1,
+      average_reviewer_score: -1,
       total_number_of_reviews: -1
     }
   },
@@ -122,7 +139,7 @@
       address: 1,
       city: 1,
       country: 1,
-      average_score: 1,
+      average_reviewer_score: { $round: ["$average_reviewer_score", 2] },
       total_number_of_reviews: 1,
       distance_km: {
         $round: [
@@ -133,4 +150,4 @@
       location: 1
     }
   }
-]
+]);

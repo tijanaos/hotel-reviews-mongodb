@@ -1,4 +1,8 @@
-[
+// Q1 — Top 10 most reliable hotels in a city
+// v1: $lookup + $facet + runtime Bayesian formula
+// v2: pre-computed reliability_score → simple $match + $sort on v2_hotels_guest
+
+db.v2_hotels_guest.aggregate([
   {
     $match: {
       city: "Amsterdam",
@@ -18,8 +22,8 @@
   {
     $project: {
       _id: 0,
-      hotel_id: 1,
-      hotel_name: 1,
+      hotel_id: "$_id",
+      name: 1,
       address: 1,
       city: 1,
       country: 1,
@@ -29,4 +33,4 @@
       reliability_score: 1
     }
   }
-]
+])

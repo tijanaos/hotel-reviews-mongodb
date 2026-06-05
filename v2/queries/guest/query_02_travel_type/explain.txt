@@ -1,0 +1,348 @@
+{
+    "explainVersion" : "1",
+    "stages" : [
+        {
+            "$cursor" : {
+                "queryPlanner" : {
+                    "namespace" : "hotel_reviews.v2_reviews_guest",
+                    "indexFilterSet" : false,
+                    "parsedQuery" : {
+                        "$and" : [
+                            {
+                                "guest_types" : {
+                                    "$eq" : "couple"
+                                }
+                            },
+                            {
+                                "hotel.city" : {
+                                    "$eq" : "Amsterdam"
+                                }
+                            }
+                        ]
+                    },
+                    "queryHash" : "55BB6CE9",
+                    "planCacheKey" : "99749835",
+                    "optimizationTimeMillis" : 0,
+                    "maxIndexedOrSolutionsReached" : false,
+                    "maxIndexedAndSolutionsReached" : false,
+                    "maxScansToExplodeReached" : false,
+                    "winningPlan" : {
+                        "stage" : "PROJECTION_DEFAULT",
+                        "transformBy" : {
+                            "hotel.address" : 1,
+                            "hotel.city" : 1,
+                            "hotel.country" : 1,
+                            "hotel.name" : 1,
+                            "hotel_id" : 1,
+                            "reviewer_score" : 1,
+                            "_id" : 0
+                        },
+                        "inputStage" : {
+                            "stage" : "FETCH",
+                            "inputStage" : {
+                                "stage" : "IXSCAN",
+                                "keyPattern" : {
+                                    "hotel.city" : 1,
+                                    "guest_types" : 1
+                                },
+                                "indexName" : "idx_reviews_city_guest_types",
+                                "isMultiKey" : true,
+                                "multiKeyPaths" : {
+                                    "hotel.city" : [
+
+                                    ],
+                                    "guest_types" : [
+                                        "guest_types"
+                                    ]
+                                },
+                                "isUnique" : false,
+                                "isSparse" : false,
+                                "isPartial" : false,
+                                "indexVersion" : 2,
+                                "direction" : "forward",
+                                "indexBounds" : {
+                                    "hotel.city" : [
+                                        "[\"Amsterdam\", \"Amsterdam\"]"
+                                    ],
+                                    "guest_types" : [
+                                        "[\"couple\", \"couple\"]"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "rejectedPlans" : [
+
+                    ]
+                },
+                "executionStats" : {
+                    "executionSuccess" : true,
+                    "nReturned" : 29347,
+                    "executionTimeMillis" : 97,
+                    "totalKeysExamined" : 29347,
+                    "totalDocsExamined" : 29347,
+                    "executionStages" : {
+                        "stage" : "PROJECTION_DEFAULT",
+                        "nReturned" : 29347,
+                        "executionTimeMillisEstimate" : 23,
+                        "works" : 29348,
+                        "advanced" : 29347,
+                        "needTime" : 0,
+                        "needYield" : 0,
+                        "saveState" : 32,
+                        "restoreState" : 32,
+                        "isEOF" : 1,
+                        "transformBy" : {
+                            "hotel.address" : 1,
+                            "hotel.city" : 1,
+                            "hotel.country" : 1,
+                            "hotel.name" : 1,
+                            "hotel_id" : 1,
+                            "reviewer_score" : 1,
+                            "_id" : 0
+                        },
+                        "inputStage" : {
+                            "stage" : "FETCH",
+                            "nReturned" : 29347,
+                            "executionTimeMillisEstimate" : 9,
+                            "works" : 29348,
+                            "advanced" : 29347,
+                            "needTime" : 0,
+                            "needYield" : 0,
+                            "saveState" : 32,
+                            "restoreState" : 32,
+                            "isEOF" : 1,
+                            "docsExamined" : 29347,
+                            "alreadyHasObj" : 0,
+                            "inputStage" : {
+                                "stage" : "IXSCAN",
+                                "nReturned" : 29347,
+                                "executionTimeMillisEstimate" : 5,
+                                "works" : 29348,
+                                "advanced" : 29347,
+                                "needTime" : 0,
+                                "needYield" : 0,
+                                "saveState" : 32,
+                                "restoreState" : 32,
+                                "isEOF" : 1,
+                                "keyPattern" : {
+                                    "hotel.city" : 1,
+                                    "guest_types" : 1
+                                },
+                                "indexName" : "idx_reviews_city_guest_types",
+                                "isMultiKey" : true,
+                                "multiKeyPaths" : {
+                                    "hotel.city" : [
+
+                                    ],
+                                    "guest_types" : [
+                                        "guest_types"
+                                    ]
+                                },
+                                "isUnique" : false,
+                                "isSparse" : false,
+                                "isPartial" : false,
+                                "indexVersion" : 2,
+                                "direction" : "forward",
+                                "indexBounds" : {
+                                    "hotel.city" : [
+                                        "[\"Amsterdam\", \"Amsterdam\"]"
+                                    ],
+                                    "guest_types" : [
+                                        "[\"couple\", \"couple\"]"
+                                    ]
+                                },
+                                "keysExamined" : 29347,
+                                "seeks" : 1,
+                                "dupsTested" : 29347,
+                                "dupsDropped" : 0
+                            }
+                        }
+                    }
+                }
+            },
+            "nReturned" : 29347,
+            "executionTimeMillisEstimate" : 89
+        },
+        {
+            "$group" : {
+                "_id" : "$hotel_id",
+                "name" : {
+                    "$first" : "$hotel.name"
+                },
+                "address" : {
+                    "$first" : "$hotel.address"
+                },
+                "city" : {
+                    "$first" : "$hotel.city"
+                },
+                "country" : {
+                    "$first" : "$hotel.country"
+                },
+                "average_reviewer_score" : {
+                    "$avg" : "$reviewer_score"
+                },
+                "review_count" : {
+                    "$sum" : {
+                        "$const" : 1.0
+                    }
+                }
+            },
+            "maxAccumulatorMemoryUsageBytes" : {
+                "name" : 11670,
+                "address" : 15860,
+                "city" : 7560,
+                "country" : 7560,
+                "average_reviewer_score" : 10920,
+                "review_count" : 10080
+            },
+            "totalOutputDataSizeBytes" : 78455,
+            "usedDisk" : false,
+            "spills" : 0,
+            "spilledDataStorageSize" : 0,
+            "numBytesSpilledEstimate" : 0,
+            "spilledRecords" : 0,
+            "nReturned" : 105,
+            "executionTimeMillisEstimate" : 96
+        },
+        {
+            "$match" : {
+                "review_count" : {
+                    "$gte" : 20.0
+                }
+            },
+            "nReturned" : 103,
+            "executionTimeMillisEstimate" : 96
+        },
+        {
+            "$sort" : {
+                "sortKey" : {
+                    "average_reviewer_score" : -1,
+                    "review_count" : -1
+                },
+                "limit" : 10
+            },
+            "totalDataSizeSortedBytesEstimate" : 8217,
+            "usedDisk" : false,
+            "spills" : 0,
+            "spilledDataStorageSize" : 0,
+            "nReturned" : 10,
+            "executionTimeMillisEstimate" : 96
+        },
+        {
+            "$project" : {
+                "name" : true,
+                "address" : true,
+                "city" : true,
+                "country" : true,
+                "review_count" : true,
+                "hotel_id" : "$_id",
+                "guest_type" : {
+                    "$const" : "couple"
+                },
+                "average_reviewer_score" : {
+                    "$round" : [
+                        "$average_reviewer_score",
+                        {
+                            "$const" : 2.0
+                        }
+                    ]
+                },
+                "_id" : false
+            },
+            "nReturned" : 10,
+            "executionTimeMillisEstimate" : 96
+        }
+    ],
+    "serverInfo" : {
+        "host" : "0b4c35b42167",
+        "port" : 27017,
+        "version" : "7.0.34",
+        "gitVersion" : "ed9a6630253d3bc301e5ef19606704715d1e2066"
+    },
+    "serverParameters" : {
+        "internalQueryFacetBufferSizeBytes" : 104857600,
+        "internalQueryFacetMaxOutputDocSizeBytes" : 104857600,
+        "internalLookupStageIntermediateDocumentMaxSizeBytes" : 104857600,
+        "internalDocumentSourceGroupMaxMemoryBytes" : 104857600,
+        "internalQueryMaxBlockingSortMemoryUsageBytes" : 104857600,
+        "internalQueryProhibitBlockingMergeOnMongoS" : 0,
+        "internalQueryMaxAddToSetBytes" : 104857600,
+        "internalDocumentSourceSetWindowFieldsMaxMemoryBytes" : 104857600,
+        "internalQueryFrameworkControl" : "forceClassicEngine"
+    },
+    "command" : {
+        "aggregate" : "v2_reviews_guest",
+        "pipeline" : [
+            {
+                "$match" : {
+                    "hotel.city" : "Amsterdam",
+                    "guest_types" : "couple"
+                }
+            },
+            {
+                "$group" : {
+                    "_id" : "$hotel_id",
+                    "name" : {
+                        "$first" : "$hotel.name"
+                    },
+                    "address" : {
+                        "$first" : "$hotel.address"
+                    },
+                    "city" : {
+                        "$first" : "$hotel.city"
+                    },
+                    "country" : {
+                        "$first" : "$hotel.country"
+                    },
+                    "average_reviewer_score" : {
+                        "$avg" : "$reviewer_score"
+                    },
+                    "review_count" : {
+                        "$sum" : 1.0
+                    }
+                }
+            },
+            {
+                "$match" : {
+                    "review_count" : {
+                        "$gte" : 20.0
+                    }
+                }
+            },
+            {
+                "$sort" : {
+                    "average_reviewer_score" : -1.0,
+                    "review_count" : -1.0
+                }
+            },
+            {
+                "$limit" : 10.0
+            },
+            {
+                "$project" : {
+                    "_id" : 0.0,
+                    "hotel_id" : "$_id",
+                    "name" : 1.0,
+                    "address" : 1.0,
+                    "city" : 1.0,
+                    "country" : 1.0,
+                    "guest_type" : "couple",
+                    "average_reviewer_score" : {
+                        "$round" : [
+                            "$average_reviewer_score",
+                            2.0
+                        ]
+                    },
+                    "review_count" : 1.0
+                }
+            }
+        ],
+        "maxTimeMS" : 0,
+        "cursor" : {
+
+        },
+        "$db" : "hotel_reviews"
+    },
+    "ok" : 1.0
+}

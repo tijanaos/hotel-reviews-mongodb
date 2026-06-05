@@ -1,3 +1,4 @@
+db.v1_reviews.aggregate(
 [
   {
     $lookup: {
@@ -109,4 +110,4 @@
   {
     $limit: 10
   }
-]
+]);

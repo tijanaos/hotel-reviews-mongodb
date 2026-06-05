@@ -1,4 +1,4 @@
-[
+db.v1_reviews.aggregate([
   {
     $lookup: {
       from: "v1_hotels",
@@ -104,4 +104,4 @@
       latest_reviews: 1
     }
   }
-]
+]);

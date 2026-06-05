@@ -1,7 +1,0 @@
-db.v2_hotel_reliability_stats.createIndex({
-  city: 1,
-  minimum_reviews: 1,
-  reliability_score: -1,
-  average_reviewer_score: -1,
-  review_count: -1
-})

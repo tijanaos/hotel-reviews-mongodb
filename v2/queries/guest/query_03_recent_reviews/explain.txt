@@ -1,0 +1,367 @@
+{
+    "explainVersion" : "1",
+    "queryPlanner" : {
+        "namespace" : "hotel_reviews.v2_hotels_guest",
+        "indexFilterSet" : false,
+        "parsedQuery" : {
+            "$and" : [
+                {
+                    "city" : {
+                        "$eq" : "Amsterdam"
+                    }
+                },
+                {
+                    "name" : {
+                        "$eq" : "Hotel Arena"
+                    }
+                }
+            ]
+        },
+        "queryHash" : "AA161BE7",
+        "planCacheKey" : "FB707009",
+        "optimizationTimeMillis" : 0,
+        "optimizedPipeline" : true,
+        "maxIndexedOrSolutionsReached" : false,
+        "maxIndexedAndSolutionsReached" : false,
+        "maxScansToExplodeReached" : false,
+        "winningPlan" : {
+            "stage" : "PROJECTION_DEFAULT",
+            "transformBy" : {
+                "recent_average_score" : true,
+                "hotel" : {
+                    "address" : true,
+                    "city" : true,
+                    "country" : true,
+                    "total_number_of_reviews" : true,
+                    "hotel_id" : "$_id",
+                    "hotel_name" : "$name",
+                    "total_average_score" : "$average_score"
+                },
+                "recent_review_count" : {
+                    "$size" : [
+                        "$recent_reviews"
+                    ]
+                },
+                "latest_reviews" : "$recent_reviews",
+                "_id" : false
+            },
+            "inputStage" : {
+                "stage" : "FETCH",
+                "inputStage" : {
+                    "stage" : "IXSCAN",
+                    "keyPattern" : {
+                        "name" : 1,
+                        "city" : 1
+                    },
+                    "indexName" : "idx_hotels_name_city",
+                    "isMultiKey" : false,
+                    "multiKeyPaths" : {
+                        "name" : [
+
+                        ],
+                        "city" : [
+
+                        ]
+                    },
+                    "isUnique" : false,
+                    "isSparse" : false,
+                    "isPartial" : false,
+                    "indexVersion" : 2,
+                    "direction" : "forward",
+                    "indexBounds" : {
+                        "name" : [
+                            "[\"Hotel Arena\", \"Hotel Arena\"]"
+                        ],
+                        "city" : [
+                            "[\"Amsterdam\", \"Amsterdam\"]"
+                        ]
+                    }
+                }
+            }
+        },
+        "rejectedPlans" : [
+            {
+                "stage" : "PROJECTION_DEFAULT",
+                "transformBy" : {
+                    "recent_average_score" : true,
+                    "hotel" : {
+                        "address" : true,
+                        "city" : true,
+                        "country" : true,
+                        "total_number_of_reviews" : true,
+                        "hotel_id" : "$_id",
+                        "hotel_name" : "$name",
+                        "total_average_score" : "$average_score"
+                    },
+                    "recent_review_count" : {
+                        "$size" : [
+                            "$recent_reviews"
+                        ]
+                    },
+                    "latest_reviews" : "$recent_reviews",
+                    "_id" : false
+                },
+                "inputStage" : {
+                    "stage" : "FETCH",
+                    "filter" : {
+                        "name" : {
+                            "$eq" : "Hotel Arena"
+                        }
+                    },
+                    "inputStage" : {
+                        "stage" : "IXSCAN",
+                        "keyPattern" : {
+                            "city" : 1,
+                            "review_count" : 1,
+                            "reliability_score" : -1,
+                            "average_reviewer_score" : -1
+                        },
+                        "indexName" : "idx_hotels_city_reliability",
+                        "isMultiKey" : false,
+                        "multiKeyPaths" : {
+                            "city" : [
+
+                            ],
+                            "review_count" : [
+
+                            ],
+                            "reliability_score" : [
+
+                            ],
+                            "average_reviewer_score" : [
+
+                            ]
+                        },
+                        "isUnique" : false,
+                        "isSparse" : false,
+                        "isPartial" : false,
+                        "indexVersion" : 2,
+                        "direction" : "forward",
+                        "indexBounds" : {
+                            "city" : [
+                                "[\"Amsterdam\", \"Amsterdam\"]"
+                            ],
+                            "review_count" : [
+                                "[MinKey, MaxKey]"
+                            ],
+                            "reliability_score" : [
+                                "[MaxKey, MinKey]"
+                            ],
+                            "average_reviewer_score" : [
+                                "[MaxKey, MinKey]"
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "stage" : "PROJECTION_DEFAULT",
+                "transformBy" : {
+                    "recent_average_score" : true,
+                    "hotel" : {
+                        "address" : true,
+                        "city" : true,
+                        "country" : true,
+                        "total_number_of_reviews" : true,
+                        "hotel_id" : "$_id",
+                        "hotel_name" : "$name",
+                        "total_average_score" : "$average_score"
+                    },
+                    "recent_review_count" : {
+                        "$size" : [
+                            "$recent_reviews"
+                        ]
+                    },
+                    "latest_reviews" : "$recent_reviews",
+                    "_id" : false
+                },
+                "inputStage" : {
+                    "stage" : "FETCH",
+                    "filter" : {
+                        "name" : {
+                            "$eq" : "Hotel Arena"
+                        }
+                    },
+                    "inputStage" : {
+                        "stage" : "IXSCAN",
+                        "keyPattern" : {
+                            "city" : 1,
+                            "problem_stats.problem_type" : 1
+                        },
+                        "indexName" : "idx_hotels_city_problem_type",
+                        "isMultiKey" : true,
+                        "multiKeyPaths" : {
+                            "city" : [
+
+                            ],
+                            "problem_stats.problem_type" : [
+                                "problem_stats"
+                            ]
+                        },
+                        "isUnique" : false,
+                        "isSparse" : false,
+                        "isPartial" : false,
+                        "indexVersion" : 2,
+                        "direction" : "forward",
+                        "indexBounds" : {
+                            "city" : [
+                                "[\"Amsterdam\", \"Amsterdam\"]"
+                            ],
+                            "problem_stats.problem_type" : [
+                                "[MinKey, MaxKey]"
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "executionStats" : {
+        "executionSuccess" : true,
+        "nReturned" : 1,
+        "executionTimeMillis" : 0,
+        "totalKeysExamined" : 1,
+        "totalDocsExamined" : 1,
+        "executionStages" : {
+            "stage" : "PROJECTION_DEFAULT",
+            "nReturned" : 1,
+            "executionTimeMillisEstimate" : 0,
+            "works" : 3,
+            "advanced" : 1,
+            "needTime" : 0,
+            "needYield" : 0,
+            "saveState" : 0,
+            "restoreState" : 0,
+            "isEOF" : 1,
+            "transformBy" : {
+                "recent_average_score" : true,
+                "hotel" : {
+                    "address" : true,
+                    "city" : true,
+                    "country" : true,
+                    "total_number_of_reviews" : true,
+                    "hotel_id" : "$_id",
+                    "hotel_name" : "$name",
+                    "total_average_score" : "$average_score"
+                },
+                "recent_review_count" : {
+                    "$size" : [
+                        "$recent_reviews"
+                    ]
+                },
+                "latest_reviews" : "$recent_reviews",
+                "_id" : false
+            },
+            "inputStage" : {
+                "stage" : "FETCH",
+                "nReturned" : 1,
+                "executionTimeMillisEstimate" : 0,
+                "works" : 3,
+                "advanced" : 1,
+                "needTime" : 0,
+                "needYield" : 0,
+                "saveState" : 0,
+                "restoreState" : 0,
+                "isEOF" : 1,
+                "docsExamined" : 1,
+                "alreadyHasObj" : 0,
+                "inputStage" : {
+                    "stage" : "IXSCAN",
+                    "nReturned" : 1,
+                    "executionTimeMillisEstimate" : 0,
+                    "works" : 2,
+                    "advanced" : 1,
+                    "needTime" : 0,
+                    "needYield" : 0,
+                    "saveState" : 0,
+                    "restoreState" : 0,
+                    "isEOF" : 1,
+                    "keyPattern" : {
+                        "name" : 1,
+                        "city" : 1
+                    },
+                    "indexName" : "idx_hotels_name_city",
+                    "isMultiKey" : false,
+                    "multiKeyPaths" : {
+                        "name" : [
+
+                        ],
+                        "city" : [
+
+                        ]
+                    },
+                    "isUnique" : false,
+                    "isSparse" : false,
+                    "isPartial" : false,
+                    "indexVersion" : 2,
+                    "direction" : "forward",
+                    "indexBounds" : {
+                        "name" : [
+                            "[\"Hotel Arena\", \"Hotel Arena\"]"
+                        ],
+                        "city" : [
+                            "[\"Amsterdam\", \"Amsterdam\"]"
+                        ]
+                    },
+                    "keysExamined" : 1,
+                    "seeks" : 1,
+                    "dupsTested" : 0,
+                    "dupsDropped" : 0
+                }
+            }
+        }
+    },
+    "command" : {
+        "aggregate" : "v2_hotels_guest",
+        "pipeline" : [
+            {
+                "$match" : {
+                    "name" : "Hotel Arena",
+                    "city" : "Amsterdam"
+                }
+            },
+            {
+                "$project" : {
+                    "_id" : 0.0,
+                    "hotel" : {
+                        "hotel_id" : "$_id",
+                        "hotel_name" : "$name",
+                        "address" : 1.0,
+                        "city" : 1.0,
+                        "country" : 1.0,
+                        "total_average_score" : "$average_score",
+                        "total_number_of_reviews" : 1.0
+                    },
+                    "recent_review_count" : {
+                        "$size" : "$recent_reviews"
+                    },
+                    "recent_average_score" : 1.0,
+                    "latest_reviews" : "$recent_reviews"
+                }
+            }
+        ],
+        "maxTimeMS" : 0,
+        "cursor" : {
+
+        },
+        "$db" : "hotel_reviews"
+    },
+    "serverInfo" : {
+        "host" : "0b4c35b42167",
+        "port" : 27017,
+        "version" : "7.0.34",
+        "gitVersion" : "ed9a6630253d3bc301e5ef19606704715d1e2066"
+    },
+    "serverParameters" : {
+        "internalQueryFacetBufferSizeBytes" : 104857600,
+        "internalQueryFacetMaxOutputDocSizeBytes" : 104857600,
+        "internalLookupStageIntermediateDocumentMaxSizeBytes" : 104857600,
+        "internalDocumentSourceGroupMaxMemoryBytes" : 104857600,
+        "internalQueryMaxBlockingSortMemoryUsageBytes" : 104857600,
+        "internalQueryProhibitBlockingMergeOnMongoS" : 0,
+        "internalQueryMaxAddToSetBytes" : 104857600,
+        "internalDocumentSourceSetWindowFieldsMaxMemoryBytes" : 104857600,
+        "internalQueryFrameworkControl" : "forceClassicEngine"
+    },
+    "ok" : 1.0
+}
