@@ -1,0 +1,171 @@
+[{
+    "address" : "Via Silvio Pellico 2 Milan City Center 20121 Milan Italy",
+    "city" : "Milan",
+    "country" : "Italy",
+    "total_number_of_reviews" : 336,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            9.1893265,
+            45.4648822
+        ]
+    },
+    "hotel_id" : "6a1ffc17ff73684035c7337f",
+    "hotel_name" : "TownHouse Duomo",
+    "average_reviewer_score" : 8.44,
+    "distance_km" : 0.09
+},
+{
+    "address" : "Silvio Pellico 4 Milan City Center 20121 Milan Italy",
+    "city" : "Milan",
+    "country" : "Italy",
+    "total_number_of_reviews" : 2011,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            9.1895249,
+            45.4651371
+        ]
+    },
+    "hotel_id" : "6a1ffc17ff73684035c732f6",
+    "hotel_name" : "Room Mate Giulia",
+    "average_reviewer_score" : 9.4,
+    "distance_km" : 0.11
+},
+{
+    "address" : "Via San Raffaele 3 Milan City Center 20121 Milan Italy",
+    "city" : "Milan",
+    "country" : "Italy",
+    "total_number_of_reviews" : 1062,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            9.191247,
+            45.465237
+        ]
+    },
+    "hotel_id" : "6a1ffc17ff73684035c73374",
+    "hotel_name" : "STRAF a Member of Design Hotels ",
+    "average_reviewer_score" : 8.37,
+    "distance_km" : 0.15
+},
+{
+    "address" : "Via Mazzini 4 Milan City Center 20123 Milan Italy",
+    "city" : "Milan",
+    "country" : "Italy",
+    "total_number_of_reviews" : 1108,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            9.1884242,
+            45.4633289
+        ]
+    },
+    "hotel_id" : "6a1ffc17ff73684035c7335b",
+    "hotel_name" : "UNA Maison Milano",
+    "average_reviewer_score" : 9.32,
+    "distance_km" : 0.16
+},
+{
+    "address" : "Via Tommaso Grossi 1 Milan City Center 20121 Milan Italy",
+    "city" : "Milan",
+    "country" : "Italy",
+    "total_number_of_reviews" : 428,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            9.1889612,
+            45.4654912
+        ]
+    },
+    "hotel_id" : "6a1ffc17ff73684035c73387",
+    "hotel_name" : "Park Hyatt Milano",
+    "average_reviewer_score" : 9.05,
+    "distance_km" : 0.16
+},
+{
+    "address" : "Via Silvio Pellico 8 Milan City Center 20121 Milan Italy",
+    "city" : "Milan",
+    "country" : "Italy",
+    "total_number_of_reviews" : 731,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            9.1895321,
+            45.4657842
+        ]
+    },
+    "hotel_id" : "6a1ffc17ff73684035c73380",
+    "hotel_name" : "TownHouse Galleria",
+    "average_reviewer_score" : 8.15,
+    "distance_km" : 0.18
+},
+{
+    "address" : "Via San Raffaele 6 Milan City Center 20121 Milan Italy",
+    "city" : "Milan",
+    "country" : "Italy",
+    "total_number_of_reviews" : 346,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            9.1914986,
+            45.4655368
+        ]
+    },
+    "hotel_id" : "6a1ffc17ff73684035c73375",
+    "hotel_name" : "Sina The Gray",
+    "average_reviewer_score" : 8.14,
+    "distance_km" : 0.19
+},
+{
+    "address" : "Via Spadari 11 Milan City Center 20123 Milan Italy",
+    "city" : "Milan",
+    "country" : "Italy",
+    "total_number_of_reviews" : 755,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            9.1869092,
+            45.463579
+        ]
+    },
+    "hotel_id" : "6a1ffc17ff73684035c73381",
+    "hotel_name" : "Hotel Spadari Al Duomo",
+    "average_reviewer_score" : 9.44,
+    "distance_km" : 0.25
+},
+{
+    "address" : "Via Hoepli 6 Milan City Center 20121 Milan Italy",
+    "city" : "Milan",
+    "country" : "Italy",
+    "total_number_of_reviews" : 1718,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            9.192297,
+            45.465957
+        ]
+    },
+    "hotel_id" : "6a1ffc17ff73684035c73344",
+    "hotel_name" : "Sina De La Ville",
+    "average_reviewer_score" : 8.18,
+    "distance_km" : 0.27
+},
+{
+    "address" : "Piazza Fontana 3 Milan City Center 20122 Milan Italy",
+    "city" : "Milan",
+    "country" : "Italy",
+    "total_number_of_reviews" : 4000,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            9.1940273,
+            45.4638223
+        ]
+    },
+    "hotel_id" : "6a1ffc17ff73684035c73285",
+    "hotel_name" : "Rosa Grand Milano Starhotels Collezione",
+    "average_reviewer_score" : 8.43,
+    "distance_km" : 0.32
+}
+]

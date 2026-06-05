@@ -1,0 +1,689 @@
+{
+    "explainVersion" : "1",
+    "stages" : [
+        {
+            "$cursor" : {
+                "queryPlanner" : {
+                    "namespace" : "hotel_reviews.v1_reviews",
+                    "indexFilterSet" : false,
+                    "parsedQuery" : {
+                        "negative_review" : {
+                            "$not" : {
+                                "$eq" : "No Negative"
+                            }
+                        }
+                    },
+                    "queryHash" : "761E4B52",
+                    "planCacheKey" : "8CB391AA",
+                    "optimizationTimeMillis" : 0,
+                    "maxIndexedOrSolutionsReached" : false,
+                    "maxIndexedAndSolutionsReached" : false,
+                    "maxScansToExplodeReached" : false,
+                    "winningPlan" : {
+                        "stage" : "PROJECTION_SIMPLE",
+                        "transformBy" : {
+                            "hotel_id" : 1,
+                            "negative_review" : 1,
+                            "reviewer_score" : 1,
+                            "_id" : 0
+                        },
+                        "inputStage" : {
+                            "stage" : "COLLSCAN",
+                            "filter" : {
+                                "negative_review" : {
+                                    "$not" : {
+                                        "$eq" : "No Negative"
+                                    }
+                                }
+                            },
+                            "direction" : "forward"
+                        }
+                    },
+                    "rejectedPlans" : [
+
+                    ]
+                },
+                "executionStats" : {
+                    "executionSuccess" : true,
+                    "nReturned" : 387848,
+                    "executionTimeMillis" : 24546,
+                    "totalKeysExamined" : 0,
+                    "totalDocsExamined" : 515738,
+                    "executionStages" : {
+                        "stage" : "PROJECTION_SIMPLE",
+                        "nReturned" : 387848,
+                        "executionTimeMillisEstimate" : 35,
+                        "works" : 515739,
+                        "advanced" : 387848,
+                        "needTime" : 127890,
+                        "needYield" : 0,
+                        "saveState" : 560,
+                        "restoreState" : 560,
+                        "isEOF" : 1,
+                        "transformBy" : {
+                            "hotel_id" : 1,
+                            "negative_review" : 1,
+                            "reviewer_score" : 1,
+                            "_id" : 0
+                        },
+                        "inputStage" : {
+                            "stage" : "COLLSCAN",
+                            "filter" : {
+                                "negative_review" : {
+                                    "$not" : {
+                                        "$eq" : "No Negative"
+                                    }
+                                }
+                            },
+                            "nReturned" : 387848,
+                            "executionTimeMillisEstimate" : 21,
+                            "works" : 515739,
+                            "advanced" : 387848,
+                            "needTime" : 127890,
+                            "needYield" : 0,
+                            "saveState" : 560,
+                            "restoreState" : 560,
+                            "isEOF" : 1,
+                            "direction" : "forward",
+                            "docsExamined" : 515738
+                        }
+                    }
+                }
+            },
+            "nReturned" : 387848,
+            "executionTimeMillisEstimate" : 413
+        },
+        {
+            "$lookup" : {
+                "from" : "v1_hotels",
+                "as" : "hotel",
+                "localField" : "hotel_id",
+                "foreignField" : "_id",
+                "let" : {
+
+                },
+                "pipeline" : [
+                    {
+                        "$match" : {
+                            "city" : {
+                                "$eq" : "Amsterdam"
+                            }
+                        }
+                    }
+                ],
+                "unwinding" : {
+                    "preserveNullAndEmptyArrays" : false
+                }
+            },
+            "totalDocsExamined" : 387849,
+            "totalKeysExamined" : 387849,
+            "collectionScans" : 0,
+            "indexesUsed" : [
+                "_id_"
+            ],
+            "nReturned" : 42938,
+            "executionTimeMillisEstimate" : 24511
+        },
+        {
+            "$addFields" : {
+                "negative_review_lower" : {
+                    "$toLower" : [
+                        "$negative_review"
+                    ]
+                }
+            },
+            "nReturned" : 42938,
+            "executionTimeMillisEstimate" : 24518
+        },
+        {
+            "$addFields" : {
+                "problem_types" : {
+                    "$setUnion" : [
+                        {
+                            "$cond" : [
+                                {
+                                    "$regexMatch" : {
+                                        "input" : "$negative_review_lower",
+                                        "regex" : {
+                                            "$const" : "noise|noisy|loud|soundproof"
+                                        }
+                                    }
+                                },
+                                {
+                                    "$const" : [
+                                        "noise"
+                                    ]
+                                },
+                                {
+                                    "$const" : [
+
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "$cond" : [
+                                {
+                                    "$regexMatch" : {
+                                        "input" : "$negative_review_lower",
+                                        "regex" : {
+                                            "$const" : "small room|tiny room|room was small|rooms are small"
+                                        }
+                                    }
+                                },
+                                {
+                                    "$const" : [
+                                        "small_room"
+                                    ]
+                                },
+                                {
+                                    "$const" : [
+
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "$cond" : [
+                                {
+                                    "$regexMatch" : {
+                                        "input" : "$negative_review_lower",
+                                        "regex" : {
+                                            "$const" : "dirty|cleanliness|unclean|not clean|dust|smell"
+                                        }
+                                    }
+                                },
+                                {
+                                    "$const" : [
+                                        "cleanliness"
+                                    ]
+                                },
+                                {
+                                    "$const" : [
+
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "$cond" : [
+                                {
+                                    "$regexMatch" : {
+                                        "input" : "$negative_review_lower",
+                                        "regex" : {
+                                            "$const" : "bed|mattress|pillow"
+                                        }
+                                    }
+                                },
+                                {
+                                    "$const" : [
+                                        "bed"
+                                    ]
+                                },
+                                {
+                                    "$const" : [
+
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "$cond" : [
+                                {
+                                    "$regexMatch" : {
+                                        "input" : "$negative_review_lower",
+                                        "regex" : {
+                                            "$const" : "air conditioning|aircondition|air con|a/c| ac |heating|climate"
+                                        }
+                                    }
+                                },
+                                {
+                                    "$const" : [
+                                        "air_conditioning"
+                                    ]
+                                },
+                                {
+                                    "$const" : [
+
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "$cond" : [
+                                {
+                                    "$regexMatch" : {
+                                        "input" : "$negative_review_lower",
+                                        "regex" : {
+                                            "$const" : "wifi|wi fi|wi-fi|internet"
+                                        }
+                                    }
+                                },
+                                {
+                                    "$const" : [
+                                        "wifi"
+                                    ]
+                                },
+                                {
+                                    "$const" : [
+
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "nReturned" : 42938,
+            "executionTimeMillisEstimate" : 24540
+        },
+        {
+            "$match" : {
+                "$expr" : {
+                    "$gt" : [
+                        {
+                            "$size" : [
+                                "$problem_types"
+                            ]
+                        },
+                        {
+                            "$const" : 0.0
+                        }
+                    ]
+                }
+            },
+            "nReturned" : 10774,
+            "executionTimeMillisEstimate" : 24540
+        },
+        {
+            "$unwind" : {
+                "path" : "$problem_types"
+            },
+            "nReturned" : 12622,
+            "executionTimeMillisEstimate" : 24540
+        },
+        {
+            "$group" : {
+                "_id" : {
+                    "hotel_id" : "$hotel._id",
+                    "problem_type" : "$problem_types"
+                },
+                "hotel_name" : {
+                    "$first" : "$hotel.name"
+                },
+                "address" : {
+                    "$first" : "$hotel.address"
+                },
+                "city" : {
+                    "$first" : "$hotel.city"
+                },
+                "country" : {
+                    "$first" : "$hotel.country"
+                },
+                "total_hotel_reviews" : {
+                    "$first" : "$hotel.total_number_of_reviews"
+                },
+                "problem_review_count" : {
+                    "$sum" : {
+                        "$const" : 1.0
+                    }
+                },
+                "average_problem_reviewer_score" : {
+                    "$avg" : "$reviewer_score"
+                }
+            },
+            "maxAccumulatorMemoryUsageBytes" : {
+                "hotel_name" : 65714,
+                "address" : 89326,
+                "city" : 42624,
+                "country" : 42624,
+                "total_hotel_reviews" : 42624,
+                "problem_review_count" : 56832,
+                "average_problem_reviewer_score" : 61568
+            },
+            "totalOutputDataSizeBytes" : 590304,
+            "usedDisk" : false,
+            "spills" : 0,
+            "spilledDataStorageSize" : 0,
+            "numBytesSpilledEstimate" : 0,
+            "spilledRecords" : 0,
+            "nReturned" : 592,
+            "executionTimeMillisEstimate" : 24540
+        },
+        {
+            "$match" : {
+                "problem_review_count" : {
+                    "$gte" : 10.0
+                }
+            },
+            "nReturned" : 337,
+            "executionTimeMillisEstimate" : 24540
+        },
+        {
+            "$addFields" : {
+                "problem_review_percentage" : {
+                    "$multiply" : [
+                        {
+                            "$divide" : [
+                                "$problem_review_count",
+                                "$total_hotel_reviews"
+                            ]
+                        },
+                        {
+                            "$const" : 100.0
+                        }
+                    ]
+                }
+            },
+            "nReturned" : 337,
+            "executionTimeMillisEstimate" : 24540
+        },
+        {
+            "$sort" : {
+                "sortKey" : {
+                    "problem_review_percentage" : -1,
+                    "problem_review_count" : -1,
+                    "average_problem_reviewer_score" : 1
+                },
+                "limit" : 20
+            },
+            "totalDataSizeSortedBytesEstimate" : 21702,
+            "usedDisk" : false,
+            "spills" : 0,
+            "spilledDataStorageSize" : 0,
+            "nReturned" : 20,
+            "executionTimeMillisEstimate" : 24540
+        },
+        {
+            "$project" : {
+                "hotel_name" : true,
+                "address" : true,
+                "city" : true,
+                "country" : true,
+                "total_hotel_reviews" : true,
+                "problem_review_count" : true,
+                "hotel_id" : "$_id.hotel_id",
+                "problem_type" : "$_id.problem_type",
+                "problem_review_percentage" : {
+                    "$round" : [
+                        "$problem_review_percentage",
+                        {
+                            "$const" : 2.0
+                        }
+                    ]
+                },
+                "average_problem_reviewer_score" : {
+                    "$round" : [
+                        "$average_problem_reviewer_score",
+                        {
+                            "$const" : 2.0
+                        }
+                    ]
+                },
+                "_id" : false
+            },
+            "nReturned" : 20,
+            "executionTimeMillisEstimate" : 24540
+        }
+    ],
+    "serverInfo" : {
+        "host" : "0b4c35b42167",
+        "port" : 27017,
+        "version" : "7.0.34",
+        "gitVersion" : "ed9a6630253d3bc301e5ef19606704715d1e2066"
+    },
+    "serverParameters" : {
+        "internalQueryFacetBufferSizeBytes" : 104857600,
+        "internalQueryFacetMaxOutputDocSizeBytes" : 104857600,
+        "internalLookupStageIntermediateDocumentMaxSizeBytes" : 104857600,
+        "internalDocumentSourceGroupMaxMemoryBytes" : 104857600,
+        "internalQueryMaxBlockingSortMemoryUsageBytes" : 104857600,
+        "internalQueryProhibitBlockingMergeOnMongoS" : 0,
+        "internalQueryMaxAddToSetBytes" : 104857600,
+        "internalDocumentSourceSetWindowFieldsMaxMemoryBytes" : 104857600,
+        "internalQueryFrameworkControl" : "forceClassicEngine"
+    },
+    "command" : {
+        "aggregate" : "v1_reviews",
+        "pipeline" : [
+            {
+                "$lookup" : {
+                    "from" : "v1_hotels",
+                    "localField" : "hotel_id",
+                    "foreignField" : "_id",
+                    "as" : "hotel"
+                }
+            },
+            {
+                "$unwind" : "$hotel"
+            },
+            {
+                "$match" : {
+                    "hotel.city" : "Amsterdam",
+                    "negative_review" : {
+                        "$ne" : "No Negative"
+                    }
+                }
+            },
+            {
+                "$addFields" : {
+                    "negative_review_lower" : {
+                        "$toLower" : "$negative_review"
+                    }
+                }
+            },
+            {
+                "$addFields" : {
+                    "problem_types" : {
+                        "$setUnion" : [
+                            {
+                                "$cond" : [
+                                    {
+                                        "$regexMatch" : {
+                                            "input" : "$negative_review_lower",
+                                            "regex" : "noise|noisy|loud|soundproof"
+                                        }
+                                    },
+                                    [
+                                        "noise"
+                                    ],
+                                    [
+
+                                    ]
+                                ]
+                            },
+                            {
+                                "$cond" : [
+                                    {
+                                        "$regexMatch" : {
+                                            "input" : "$negative_review_lower",
+                                            "regex" : "small room|tiny room|room was small|rooms are small"
+                                        }
+                                    },
+                                    [
+                                        "small_room"
+                                    ],
+                                    [
+
+                                    ]
+                                ]
+                            },
+                            {
+                                "$cond" : [
+                                    {
+                                        "$regexMatch" : {
+                                            "input" : "$negative_review_lower",
+                                            "regex" : "dirty|cleanliness|unclean|not clean|dust|smell"
+                                        }
+                                    },
+                                    [
+                                        "cleanliness"
+                                    ],
+                                    [
+
+                                    ]
+                                ]
+                            },
+                            {
+                                "$cond" : [
+                                    {
+                                        "$regexMatch" : {
+                                            "input" : "$negative_review_lower",
+                                            "regex" : "bed|mattress|pillow"
+                                        }
+                                    },
+                                    [
+                                        "bed"
+                                    ],
+                                    [
+
+                                    ]
+                                ]
+                            },
+                            {
+                                "$cond" : [
+                                    {
+                                        "$regexMatch" : {
+                                            "input" : "$negative_review_lower",
+                                            "regex" : "air conditioning|aircondition|air con|a/c| ac |heating|climate"
+                                        }
+                                    },
+                                    [
+                                        "air_conditioning"
+                                    ],
+                                    [
+
+                                    ]
+                                ]
+                            },
+                            {
+                                "$cond" : [
+                                    {
+                                        "$regexMatch" : {
+                                            "input" : "$negative_review_lower",
+                                            "regex" : "wifi|wi fi|wi-fi|internet"
+                                        }
+                                    },
+                                    [
+                                        "wifi"
+                                    ],
+                                    [
+
+                                    ]
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "$match" : {
+                    "$expr" : {
+                        "$gt" : [
+                            {
+                                "$size" : "$problem_types"
+                            },
+                            0.0
+                        ]
+                    }
+                }
+            },
+            {
+                "$unwind" : "$problem_types"
+            },
+            {
+                "$group" : {
+                    "_id" : {
+                        "hotel_id" : "$hotel._id",
+                        "problem_type" : "$problem_types"
+                    },
+                    "hotel_name" : {
+                        "$first" : "$hotel.name"
+                    },
+                    "address" : {
+                        "$first" : "$hotel.address"
+                    },
+                    "city" : {
+                        "$first" : "$hotel.city"
+                    },
+                    "country" : {
+                        "$first" : "$hotel.country"
+                    },
+                    "total_hotel_reviews" : {
+                        "$first" : "$hotel.total_number_of_reviews"
+                    },
+                    "problem_review_count" : {
+                        "$sum" : 1.0
+                    },
+                    "average_problem_reviewer_score" : {
+                        "$avg" : "$reviewer_score"
+                    }
+                }
+            },
+            {
+                "$addFields" : {
+                    "problem_review_percentage" : {
+                        "$multiply" : [
+                            {
+                                "$divide" : [
+                                    "$problem_review_count",
+                                    "$total_hotel_reviews"
+                                ]
+                            },
+                            100.0
+                        ]
+                    }
+                }
+            },
+            {
+                "$match" : {
+                    "problem_review_count" : {
+                        "$gte" : 10.0
+                    }
+                }
+            },
+            {
+                "$sort" : {
+                    "problem_review_percentage" : -1.0,
+                    "problem_review_count" : -1.0,
+                    "average_problem_reviewer_score" : 1.0
+                }
+            },
+            {
+                "$limit" : 20.0
+            },
+            {
+                "$project" : {
+                    "_id" : 0.0,
+                    "hotel_id" : "$_id.hotel_id",
+                    "hotel_name" : 1.0,
+                    "address" : 1.0,
+                    "city" : 1.0,
+                    "country" : 1.0,
+                    "problem_type" : "$_id.problem_type",
+                    "total_hotel_reviews" : 1.0,
+                    "problem_review_count" : 1.0,
+                    "problem_review_percentage" : {
+                        "$round" : [
+                            "$problem_review_percentage",
+                            2.0
+                        ]
+                    },
+                    "average_problem_reviewer_score" : {
+                        "$round" : [
+                            "$average_problem_reviewer_score",
+                            2.0
+                        ]
+                    }
+                }
+            }
+        ],
+        "allowDiskUse" : true,
+        "maxTimeMS" : 0,
+        "cursor" : {
+
+        },
+        "$db" : "hotel_reviews"
+    },
+    "ok" : 1.0
+}

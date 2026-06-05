@@ -1,0 +1,348 @@
+{
+    "explainVersion" : "1",
+    "stages" : [
+        {
+            "$cursor" : {
+                "queryPlanner" : {
+                    "namespace" : "hotel_reviews.v2_hotels_guest",
+                    "indexFilterSet" : false,
+                    "parsedQuery" : {
+                        "city" : {
+                            "$eq" : "Amsterdam"
+                        }
+                    },
+                    "queryHash" : "B821043A",
+                    "planCacheKey" : "408BC138",
+                    "optimizationTimeMillis" : 0,
+                    "maxIndexedOrSolutionsReached" : false,
+                    "maxIndexedAndSolutionsReached" : false,
+                    "maxScansToExplodeReached" : false,
+                    "winningPlan" : {
+                        "stage" : "PROJECTION_SIMPLE",
+                        "transformBy" : {
+                            "_id" : 1,
+                            "address" : 1,
+                            "city" : 1,
+                            "country" : 1,
+                            "name" : 1,
+                            "problem_stats" : 1,
+                            "review_count" : 1
+                        },
+                        "inputStage" : {
+                            "stage" : "FETCH",
+                            "inputStage" : {
+                                "stage" : "IXSCAN",
+                                "keyPattern" : {
+                                    "city" : 1,
+                                    "review_count" : 1,
+                                    "reliability_score" : -1,
+                                    "average_reviewer_score" : -1
+                                },
+                                "indexName" : "idx_hotels_city_reliability",
+                                "isMultiKey" : false,
+                                "multiKeyPaths" : {
+                                    "city" : [
+
+                                    ],
+                                    "review_count" : [
+
+                                    ],
+                                    "reliability_score" : [
+
+                                    ],
+                                    "average_reviewer_score" : [
+
+                                    ]
+                                },
+                                "isUnique" : false,
+                                "isSparse" : false,
+                                "isPartial" : false,
+                                "indexVersion" : 2,
+                                "direction" : "forward",
+                                "indexBounds" : {
+                                    "city" : [
+                                        "[\"Amsterdam\", \"Amsterdam\"]"
+                                    ],
+                                    "review_count" : [
+                                        "[MinKey, MaxKey]"
+                                    ],
+                                    "reliability_score" : [
+                                        "[MaxKey, MinKey]"
+                                    ],
+                                    "average_reviewer_score" : [
+                                        "[MaxKey, MinKey]"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "rejectedPlans" : [
+                        {
+                            "stage" : "PROJECTION_SIMPLE",
+                            "transformBy" : {
+                                "_id" : 1,
+                                "address" : 1,
+                                "city" : 1,
+                                "country" : 1,
+                                "name" : 1,
+                                "problem_stats" : 1,
+                                "review_count" : 1
+                            },
+                            "inputStage" : {
+                                "stage" : "FETCH",
+                                "inputStage" : {
+                                    "stage" : "IXSCAN",
+                                    "keyPattern" : {
+                                        "city" : 1,
+                                        "problem_stats.problem_type" : 1
+                                    },
+                                    "indexName" : "idx_hotels_city_problem_type",
+                                    "isMultiKey" : true,
+                                    "multiKeyPaths" : {
+                                        "city" : [
+
+                                        ],
+                                        "problem_stats.problem_type" : [
+                                            "problem_stats"
+                                        ]
+                                    },
+                                    "isUnique" : false,
+                                    "isSparse" : false,
+                                    "isPartial" : false,
+                                    "indexVersion" : 2,
+                                    "direction" : "forward",
+                                    "indexBounds" : {
+                                        "city" : [
+                                            "[\"Amsterdam\", \"Amsterdam\"]"
+                                        ],
+                                        "problem_stats.problem_type" : [
+                                            "[MinKey, MaxKey]"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                "executionStats" : {
+                    "executionSuccess" : true,
+                    "nReturned" : 105,
+                    "executionTimeMillis" : 2,
+                    "totalKeysExamined" : 105,
+                    "totalDocsExamined" : 105,
+                    "executionStages" : {
+                        "stage" : "PROJECTION_SIMPLE",
+                        "nReturned" : 105,
+                        "executionTimeMillisEstimate" : 0,
+                        "works" : 106,
+                        "advanced" : 105,
+                        "needTime" : 0,
+                        "needYield" : 0,
+                        "saveState" : 1,
+                        "restoreState" : 1,
+                        "isEOF" : 1,
+                        "transformBy" : {
+                            "_id" : 1,
+                            "address" : 1,
+                            "city" : 1,
+                            "country" : 1,
+                            "name" : 1,
+                            "problem_stats" : 1,
+                            "review_count" : 1
+                        },
+                        "inputStage" : {
+                            "stage" : "FETCH",
+                            "nReturned" : 105,
+                            "executionTimeMillisEstimate" : 0,
+                            "works" : 106,
+                            "advanced" : 105,
+                            "needTime" : 0,
+                            "needYield" : 0,
+                            "saveState" : 1,
+                            "restoreState" : 1,
+                            "isEOF" : 1,
+                            "docsExamined" : 105,
+                            "alreadyHasObj" : 0,
+                            "inputStage" : {
+                                "stage" : "IXSCAN",
+                                "nReturned" : 105,
+                                "executionTimeMillisEstimate" : 0,
+                                "works" : 106,
+                                "advanced" : 105,
+                                "needTime" : 0,
+                                "needYield" : 0,
+                                "saveState" : 1,
+                                "restoreState" : 1,
+                                "isEOF" : 1,
+                                "keyPattern" : {
+                                    "city" : 1,
+                                    "review_count" : 1,
+                                    "reliability_score" : -1,
+                                    "average_reviewer_score" : -1
+                                },
+                                "indexName" : "idx_hotels_city_reliability",
+                                "isMultiKey" : false,
+                                "multiKeyPaths" : {
+                                    "city" : [
+
+                                    ],
+                                    "review_count" : [
+
+                                    ],
+                                    "reliability_score" : [
+
+                                    ],
+                                    "average_reviewer_score" : [
+
+                                    ]
+                                },
+                                "isUnique" : false,
+                                "isSparse" : false,
+                                "isPartial" : false,
+                                "indexVersion" : 2,
+                                "direction" : "forward",
+                                "indexBounds" : {
+                                    "city" : [
+                                        "[\"Amsterdam\", \"Amsterdam\"]"
+                                    ],
+                                    "review_count" : [
+                                        "[MinKey, MaxKey]"
+                                    ],
+                                    "reliability_score" : [
+                                        "[MaxKey, MinKey]"
+                                    ],
+                                    "average_reviewer_score" : [
+                                        "[MaxKey, MinKey]"
+                                    ]
+                                },
+                                "keysExamined" : 105,
+                                "seeks" : 1,
+                                "dupsTested" : 0,
+                                "dupsDropped" : 0
+                            }
+                        }
+                    }
+                }
+            },
+            "nReturned" : 105,
+            "executionTimeMillisEstimate" : 0
+        },
+        {
+            "$unwind" : {
+                "path" : "$problem_stats"
+            },
+            "nReturned" : 592,
+            "executionTimeMillisEstimate" : 0
+        },
+        {
+            "$match" : {
+                "problem_stats.count" : {
+                    "$gte" : 10.0
+                }
+            },
+            "nReturned" : 337,
+            "executionTimeMillisEstimate" : 0
+        },
+        {
+            "$sort" : {
+                "sortKey" : {
+                    "problem_stats.percentage" : -1,
+                    "problem_stats.count" : -1,
+                    "problem_stats.avg_score" : 1
+                },
+                "limit" : 20
+            },
+            "totalDataSizeSortedBytesEstimate" : 14529,
+            "usedDisk" : false,
+            "spills" : 0,
+            "spilledDataStorageSize" : 0,
+            "nReturned" : 20,
+            "executionTimeMillisEstimate" : 0
+        },
+        {
+            "$project" : {
+                "name" : true,
+                "address" : true,
+                "city" : true,
+                "country" : true,
+                "review_count" : true,
+                "hotel_id" : "$_id",
+                "problem_type" : "$problem_stats.problem_type",
+                "problem_review_count" : "$problem_stats.count",
+                "problem_review_percentage" : "$problem_stats.percentage",
+                "average_problem_reviewer_score" : "$problem_stats.avg_score",
+                "_id" : false
+            },
+            "nReturned" : 20,
+            "executionTimeMillisEstimate" : 0
+        }
+    ],
+    "serverInfo" : {
+        "host" : "0b4c35b42167",
+        "port" : 27017,
+        "version" : "7.0.34",
+        "gitVersion" : "ed9a6630253d3bc301e5ef19606704715d1e2066"
+    },
+    "serverParameters" : {
+        "internalQueryFacetBufferSizeBytes" : 104857600,
+        "internalQueryFacetMaxOutputDocSizeBytes" : 104857600,
+        "internalLookupStageIntermediateDocumentMaxSizeBytes" : 104857600,
+        "internalDocumentSourceGroupMaxMemoryBytes" : 104857600,
+        "internalQueryMaxBlockingSortMemoryUsageBytes" : 104857600,
+        "internalQueryProhibitBlockingMergeOnMongoS" : 0,
+        "internalQueryMaxAddToSetBytes" : 104857600,
+        "internalDocumentSourceSetWindowFieldsMaxMemoryBytes" : 104857600,
+        "internalQueryFrameworkControl" : "forceClassicEngine"
+    },
+    "command" : {
+        "aggregate" : "v2_hotels_guest",
+        "pipeline" : [
+            {
+                "$match" : {
+                    "city" : "Amsterdam"
+                }
+            },
+            {
+                "$unwind" : "$problem_stats"
+            },
+            {
+                "$match" : {
+                    "problem_stats.count" : {
+                        "$gte" : 10.0
+                    }
+                }
+            },
+            {
+                "$sort" : {
+                    "problem_stats.percentage" : -1.0,
+                    "problem_stats.count" : -1.0,
+                    "problem_stats.avg_score" : 1.0
+                }
+            },
+            {
+                "$limit" : 20.0
+            },
+            {
+                "$project" : {
+                    "_id" : 0.0,
+                    "hotel_id" : "$_id",
+                    "name" : 1.0,
+                    "address" : 1.0,
+                    "city" : 1.0,
+                    "country" : 1.0,
+                    "review_count" : 1.0,
+                    "problem_type" : "$problem_stats.problem_type",
+                    "problem_review_count" : "$problem_stats.count",
+                    "problem_review_percentage" : "$problem_stats.percentage",
+                    "average_problem_reviewer_score" : "$problem_stats.avg_score"
+                }
+            }
+        ],
+        "maxTimeMS" : 0,
+        "cursor" : {
+
+        },
+        "$db" : "hotel_reviews"
+    },
+    "ok" : 1.0
+}
