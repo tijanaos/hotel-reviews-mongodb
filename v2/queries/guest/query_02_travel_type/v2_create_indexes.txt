@@ -1,0 +1,17 @@
+db.v1_reviews.createIndex({
+  tags: 1,
+  hotel_id: 1
+})
+
+db.v1_hotels.createIndex({
+  _id: 1
+})
+
+
+
+
+db.v2_reviews_guest_type.createIndex({
+  "hotel.city": 1,
+  guest_types: 1,
+  "hotel.id": 1
+})

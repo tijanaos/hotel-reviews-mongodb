@@ -1,0 +1,35 @@
+db.v1_hotels.aggregate([
+  {
+    $match: {
+      location: {
+        $ne: null
+      },
+      "location.type": "Point",
+      "location.coordinates.0": {
+        $ne: null
+      },
+      "location.coordinates.1": {
+        $ne: null
+      }
+    }
+  },
+  {
+    $project: {
+      name: 1,
+      address: 1,
+      city: 1,
+      country: 1,
+      average_score: 1,
+      total_number_of_reviews: 1,
+      location: 1,
+      schema_optimization: "geojson_location_for_2dsphere_index"
+    }
+  },
+  {
+    $merge: {
+      into: "v2_hotels_geo",
+      whenMatched: "replace",
+      whenNotMatched: "insert"
+    }
+  }
+]);

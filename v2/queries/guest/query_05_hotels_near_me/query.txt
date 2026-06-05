@@ -1,0 +1,60 @@
+db.v2_hotels_geo.aggregate([
+  {
+    $geoNear: {
+      near: {
+        type: "Point",
+        coordinates: [9.1900, 45.4642]
+      },
+      distanceField: "distance_meters",
+      maxDistance: 100000,
+      spherical: true,
+      query: {
+        total_number_of_reviews: {
+          $gte: 100
+        },
+        average_score: {
+          $gte: 8.0
+        }
+      }
+    }
+  },
+  {
+    $addFields: {
+      distance_km: {
+        $divide: [
+          "$distance_meters",
+          1000
+        ]
+      }
+    }
+  },
+  {
+    $sort: {
+      distance_meters: 1,
+      average_score: -1,
+      total_number_of_reviews: -1
+    }
+  },
+  {
+    $limit: 10
+  },
+  {
+    $project: {
+      _id: 0,
+      hotel_id: "$_id",
+      hotel_name: "$name",
+      address: 1,
+      city: 1,
+      country: 1,
+      average_score: 1,
+      total_number_of_reviews: 1,
+      distance_km: {
+        $round: [
+          "$distance_km",
+          2
+        ]
+      },
+      location: 1
+    }
+  }
+]);

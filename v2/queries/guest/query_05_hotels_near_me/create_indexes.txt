@@ -1,0 +1,18 @@
+db.v2_hotels_geo.createIndex(
+  {
+    location: "2dsphere"
+  },
+  {
+    name: "idx_q5_location_2dsphere"
+  }
+);
+
+db.v2_hotels_geo.createIndex(
+  {
+    average_score: -1,
+    total_number_of_reviews: -1
+  },
+  {
+    name: "idx_q5_score_reviews"
+  }
+);
