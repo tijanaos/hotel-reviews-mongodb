@@ -1,41 +1,20 @@
-// ------------------------------------------------------------
-// Q1 — Top 10 najpouzdanijih hotela u gradu
-// Zajednicki compound index za guest upite nad v2_hotels_guest:
-//   - Q1: city je equality filter, a reliability_score i
-//     average_reviewer_score prate sort za Top-N upit.
-//   - review_count je na kraju jer je u Q1 range/filter uslov
-//     ($gte: 100). Time sort polja ostaju pre range polja.
-//   - Isti city prefix koristi i Q3/Q4 za suzavanje na jedan grad,
-//     pa ne pravimo poseban indeks za svaki upit.
-// ------------------------------------------------------------
+// q1, q3, q4
 db.v2_hotels_guest.createIndex(
   { city: 1, reliability_score: -1, average_reviewer_score: -1, review_count: -1 },
   { name: "idx_hotels_city_reliability" }
 )
 
-
-// ------------------------------------------------------------
-// Q2 — Hoteli po tipu gosta u gradu
-// Multikey compound index (guest_types je array):
-//   - hotel.city (equality) filtrira po gradu na embedded polju
-//   - guest_types (multikey) — MongoDB indeksira svaki element
-//     arraya, sto omogucava direktan match na "couple", "solo" itd.
-//   bez ovog indexa: COLLSCAN nad celom v2_reviews_guest kolekcijom
-// ------------------------------------------------------------
+// q2
+// hotel.city (equality) filtrira po gradu na embedded polju
+// guest_types (multikey) — MongoDB indeksira svaki element
+// arraya, sto omogucava direktan match na "couple", "solo" itd.
+// bez ovog indeksa: COLLSCAN nad celom v2_reviews_guest kolekcijom
 db.v2_reviews_guest.createIndex(
   { "hotel.city": 1, guest_types: 1 },
   { name: "idx_reviews_city_guest_types" }
 )
 
-
-// ------------------------------------------------------------
-// Q5 — Hoteli u blizini korisnika ($geoNear)
-// 2dsphere index — obavezan za $geoNear stage:
-//   - bez ovog indexa $geoNear baca gresku i ne moze da se pokrene
-//   - koristi prostornu B-tree strukturu za efikasno filtriranje
-//     po radijusu, bez manuelnog racunanja Haversine formule
-//     koja se koristi u v1 neoptimizovanom upitu
-// ------------------------------------------------------------
+// q5 - geo indeks
 db.v2_hotels_guest.createIndex(
   { location: "2dsphere" },
   { name: "idx_hotels_location_2dsphere" }
