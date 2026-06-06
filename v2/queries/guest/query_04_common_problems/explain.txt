@@ -12,7 +12,7 @@
                         }
                     },
                     "queryHash" : "B821043A",
-                    "planCacheKey" : "408BC138",
+                    "planCacheKey" : "49640907",
                     "optimizationTimeMillis" : 0,
                     "maxIndexedOrSolutionsReached" : false,
                     "maxIndexedAndSolutionsReached" : false,
@@ -34,9 +34,9 @@
                                 "stage" : "IXSCAN",
                                 "keyPattern" : {
                                     "city" : 1,
-                                    "review_count" : 1,
                                     "reliability_score" : -1,
-                                    "average_reviewer_score" : -1
+                                    "average_reviewer_score" : -1,
+                                    "review_count" : -1
                                 },
                                 "indexName" : "idx_hotels_city_reliability",
                                 "isMultiKey" : false,
@@ -44,13 +44,13 @@
                                     "city" : [
 
                                     ],
-                                    "review_count" : [
-
-                                    ],
                                     "reliability_score" : [
 
                                     ],
                                     "average_reviewer_score" : [
+
+                                    ],
+                                    "review_count" : [
 
                                     ]
                                 },
@@ -63,13 +63,13 @@
                                     "city" : [
                                         "[\"Amsterdam\", \"Amsterdam\"]"
                                     ],
-                                    "review_count" : [
-                                        "[MinKey, MaxKey]"
-                                    ],
                                     "reliability_score" : [
                                         "[MaxKey, MinKey]"
                                     ],
                                     "average_reviewer_score" : [
+                                        "[MaxKey, MinKey]"
+                                    ],
+                                    "review_count" : [
                                         "[MaxKey, MinKey]"
                                     ]
                                 }
@@ -77,51 +77,7 @@
                         }
                     },
                     "rejectedPlans" : [
-                        {
-                            "stage" : "PROJECTION_SIMPLE",
-                            "transformBy" : {
-                                "_id" : 1,
-                                "address" : 1,
-                                "city" : 1,
-                                "country" : 1,
-                                "name" : 1,
-                                "problem_stats" : 1,
-                                "review_count" : 1
-                            },
-                            "inputStage" : {
-                                "stage" : "FETCH",
-                                "inputStage" : {
-                                    "stage" : "IXSCAN",
-                                    "keyPattern" : {
-                                        "city" : 1,
-                                        "problem_stats.problem_type" : 1
-                                    },
-                                    "indexName" : "idx_hotels_city_problem_type",
-                                    "isMultiKey" : true,
-                                    "multiKeyPaths" : {
-                                        "city" : [
 
-                                        ],
-                                        "problem_stats.problem_type" : [
-                                            "problem_stats"
-                                        ]
-                                    },
-                                    "isUnique" : false,
-                                    "isSparse" : false,
-                                    "isPartial" : false,
-                                    "indexVersion" : 2,
-                                    "direction" : "forward",
-                                    "indexBounds" : {
-                                        "city" : [
-                                            "[\"Amsterdam\", \"Amsterdam\"]"
-                                        ],
-                                        "problem_stats.problem_type" : [
-                                            "[MinKey, MaxKey]"
-                                        ]
-                                    }
-                                }
-                            }
-                        }
                     ]
                 },
                 "executionStats" : {
@@ -176,9 +132,9 @@
                                 "isEOF" : 1,
                                 "keyPattern" : {
                                     "city" : 1,
-                                    "review_count" : 1,
                                     "reliability_score" : -1,
-                                    "average_reviewer_score" : -1
+                                    "average_reviewer_score" : -1,
+                                    "review_count" : -1
                                 },
                                 "indexName" : "idx_hotels_city_reliability",
                                 "isMultiKey" : false,
@@ -186,13 +142,13 @@
                                     "city" : [
 
                                     ],
-                                    "review_count" : [
-
-                                    ],
                                     "reliability_score" : [
 
                                     ],
                                     "average_reviewer_score" : [
+
+                                    ],
+                                    "review_count" : [
 
                                     ]
                                 },
@@ -205,13 +161,13 @@
                                     "city" : [
                                         "[\"Amsterdam\", \"Amsterdam\"]"
                                     ],
-                                    "review_count" : [
-                                        "[MinKey, MaxKey]"
-                                    ],
                                     "reliability_score" : [
                                         "[MaxKey, MinKey]"
                                     ],
                                     "average_reviewer_score" : [
+                                        "[MaxKey, MinKey]"
+                                    ],
+                                    "review_count" : [
                                         "[MaxKey, MinKey]"
                                     ]
                                 },
@@ -278,7 +234,7 @@
         }
     ],
     "serverInfo" : {
-        "host" : "0b4c35b42167",
+        "host" : "56ae00cafb23",
         "port" : 27017,
         "version" : "7.0.34",
         "gitVersion" : "ed9a6630253d3bc301e5ef19606704715d1e2066"

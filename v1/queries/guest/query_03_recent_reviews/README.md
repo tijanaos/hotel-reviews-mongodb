@@ -1,4 +1,12 @@
-// Koje su najnovije recenzije(poslednjih 10) izabranog hotela i kakvu prosečnu ocenu hotel ima u skorijem periodu?
+# Q3 - Recent reviews
+
+## Sta upit radi
+
+Upit pronalazi poslednjih 10 recenzija za konkretan hotel, u ovom primeru `Hotel Arena` u Amsterdamu. Pored recenzija, vraca osnovne podatke o hotelu i prosecnu ocenu u tom periodu.
+
+## Kod upita
+
+```js
 
 db.v1_reviews.aggregate([
   {
@@ -107,3 +115,53 @@ db.v1_reviews.aggregate([
     }
   }
 ]);
+```
+
+## Sta usporava upit
+
+- `$lookup` ka `v1_hotels`
+- `$match` po poljima iz spojene kolekcije, tek nakon lookup-a
+- `$facet`, jer se posebno formiraju lista poslednjih recenzija, summary i hotel info.
+
+U v2 semi je ovo optimizovano preko sablona podskupa: poslednjih 10 recenzija je ugnjezdeno u dokument hotela kao `recent_reviews`.
+
+## Explain plan i vreme izvrsavanja
+
+Vreme izvrsavanja iz: **19701 ms**.
+
+![Explain plan](q3_v1_explain.png)
+
+## Primer izlaznog dokumenta
+
+```json
+{
+  "latest_reviews": [
+    {
+      "review_date": "2017-08-03T00:00:00.000+0000",
+      "reviewer_nationality": "Russia",
+      "negative_review": "I am so angry that i made this post available via all possible sites...",
+      "positive_review": "Only the park outside of the hotel was beautiful",
+      "negative_word_count": 397,
+      "positive_word_count": 11,
+      "reviewer_score": 2.9,
+      "tags": [
+        "Leisure trip",
+        "Couple",
+        "Duplex Double Room",
+        "Stayed 6 nights"
+      ]
+    }
+  ],
+  "hotel": {
+    "hotel_id": "6a1ffc17ff73684035c72dee",
+    "hotel_name": "Hotel Arena",
+    "address": " s Gravesandestraat 55 Oost 1092 AA Amsterdam Netherlands",
+    "city": "Amsterdam",
+    "country": "Netherlands",
+    "total_average_score": 7.7,
+    "total_number_of_reviews": 1403
+  },
+  "recent_review_count": 10.0,
+  "recent_average_score": 6.89
+}
+```

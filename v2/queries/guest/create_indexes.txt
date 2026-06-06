@@ -1,13 +1,15 @@
 // ------------------------------------------------------------
 // Q1 — Top 10 najpouzdanijih hotela u gradu
-// Compound index po ESR pravilu:
-//   - city (equality) eliminise sve hotele iz drugih gradova
-//   - review_count (range $gte: 100) eliminise hotele sa malo recenzija
-//   - reliability_score, average_reviewer_score (sort) — MongoDB
-//     resava sort direktno iz indexa, bez in-memory sortiranja
+// Zajednicki compound index za guest upite nad v2_hotels_guest:
+//   - Q1: city je equality filter, a reliability_score i
+//     average_reviewer_score prate sort za Top-N upit.
+//   - review_count je na kraju jer je u Q1 range/filter uslov
+//     ($gte: 100). Time sort polja ostaju pre range polja.
+//   - Isti city prefix koristi i Q3/Q4 za suzavanje na jedan grad,
+//     pa ne pravimo poseban indeks za svaki upit.
 // ------------------------------------------------------------
 db.v2_hotels_guest.createIndex(
-  { city: 1, review_count: 1, reliability_score: -1, average_reviewer_score: -1 },
+  { city: 1, reliability_score: -1, average_reviewer_score: -1, review_count: -1 },
   { name: "idx_hotels_city_reliability" }
 )
 
@@ -23,34 +25,6 @@ db.v2_hotels_guest.createIndex(
 db.v2_reviews_guest.createIndex(
   { "hotel.city": 1, guest_types: 1 },
   { name: "idx_reviews_city_guest_types" }
-)
-
-
-// ------------------------------------------------------------
-// Q3 — 10 najnovijih recenzija za konkretan hotel
-// Compound equality index:
-//   - name + city zajedno jedinstveno identifikuju hotel
-//   - direktan lookup jednog dokumenta, bez skeniranja kolekcije
-//   - recent_reviews su vec embedded u dokumentu (Subset Pattern)
-//     pa nema potrebe ni za dodatnim fetchom
-// ------------------------------------------------------------
-db.v2_hotels_guest.createIndex(
-  { name: 1, city: 1 },
-  { name: "idx_hotels_name_city" }
-)
-
-
-// ------------------------------------------------------------
-// Q4 — Najcesci problemi u negativnim recenzijama po gradu
-// Multikey compound index (problem_stats je array):
-//   - city (equality) filtrira hotele po gradu
-//   - problem_stats.problem_type (multikey) indeksira svaki
-//     element arraya, sto omogucava $unwind + $match bez
-//     skeniranja cijelog arraya za svaki hotel
-// ------------------------------------------------------------
-db.v2_hotels_guest.createIndex(
-  { city: 1, "problem_stats.problem_type": 1 },
-  { name: "idx_hotels_city_problem_type" }
 )
 
 

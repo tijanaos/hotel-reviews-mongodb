@@ -1,5 +1,31 @@
-// Koji hoteli imaju najčešće negativne komentare o problemima kao što su buka, mala soba, 
-// loša čistoća, neudoban krevet, klima ili Wi-Fi?   
+# Q4 - Common problems
+
+## Sta ubrzava upit
+
+Upit je ubrzan time sto se problemi iz negativnih recenzija vise ne detektuju u toku izvrsavanja upita. U `v2_hotels_guest` su problem statistike unapred izracunate i sacuvane u hotel dokumentu:
+
+```js
+problem_stats: [
+  {
+    problem_type,
+    count,
+    percentage,
+    avg_score
+  }
+]
+```
+
+To kombinuje sablon proracunavanja i sablon atributa.
+
+Koriscen je indeks:
+
+```js
+idx_hotels_city_reliability
+```
+
+## Kod upita
+
+```js
 
 db.v2_hotels_guest.aggregate([
   {
@@ -41,3 +67,16 @@ db.v2_hotels_guest.aggregate([
     }
   }
 ])
+```
+
+## Vreme izvrsavanja
+
+Vreme izvrsavanja: **2 ms**.
+
+Explain plan pokazuje `totalKeysExamined: 105` i `totalDocsExamined: 105`.
+
+## Explain plan
+
+
+![Explain plan 1](image.png)
+![Explain plan 2](image-1.png)

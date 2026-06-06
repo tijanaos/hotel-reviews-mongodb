@@ -1,6 +1,4 @@
-// Q3 — 10 most recent reviews for a specific hotel
-// v1: $lookup + $sort + $facet (latest_reviews + recent_score_summary + hotel_info)
-// v2: pre-embedded recent_reviews (Subset Pattern) → single document read on v2_hotels_guest
+// Koje su najnovije recenzije(poslednjih 10) izabranog hotela i kakvu prosečnu ocenu hotel ima u skorijem periodu?
 
 db.v2_hotels_guest.aggregate([
   {

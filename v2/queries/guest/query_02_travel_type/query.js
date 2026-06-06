@@ -1,6 +1,5 @@
-// Q2 — Top hotels for a specific guest type in a city
-// v1: $lookup + $match on tags (raw string) + $group
-// v2: $match on embedded hotel.city + classified guest_types array on v2_reviews_guest
+// Koji hoteli su najbolje ocenjeni od strane gostiju koji putuju kao parovi? 
+// Hoteli se racunaju ako imaju barem 20 recenzija ljudi koji su putovali kao parovi.
 
 db.v2_reviews_guest.aggregate([
   {

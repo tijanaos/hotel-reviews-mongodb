@@ -1,5 +1,12 @@
-// Koji hoteli su najbolje ocenjeni od strane gostiju koji putuju kao parovi? 
-// Hoteli se racunaju ako imaju barem 20 recenzija ljudi koji su putovali kao parovi.
+# Q2 - Hotels by guest type
+
+## Sta upit radi
+
+Upit pronalazi hotele u Amsterdamu koji su najbolje ocenjeni od strane gostiju koji putuju kao parovi. U obzir ulaze samo hoteli koji imaju barem 20 recenzija sa tagom `Couple`.
+
+## Kod upita
+
+```js
 
 db.v1_reviews.aggregate(
 [
@@ -61,3 +68,35 @@ db.v1_reviews.aggregate(
     }
   }
 ]);
+```
+
+## Sta usporava upit
+
+- `$lookup` ka `v1_hotels`
+- `$unwind` posle lookup-a
+- Grupisanje po hotelu da bi se izracunali prosecna ocena i broj recenzija parova
+
+U v2 semi se koristi `v2_reviews_guest`, gde su osnovna polja hotela sacuvana u recenziji, a tip gosta je unapred izveden u `guest_types`
+
+## Explain plan i vreme izvrsavanja
+
+Vreme izvrsavanja: **13183 ms**.
+
+![Explain plan 1](q2_v1_explain1.png)
+
+![Explain plan 2](q2_v1_explain2.png)
+
+## Primer izlaznog dokumenta
+
+```json
+{
+  "hotel_name": "The Toren",
+  "address": "Keizersgracht 164 Amsterdam City Center 1015 CZ Amsterdam Netherlands",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "review_count": 254.0,
+  "hotel_id": "6a1ffc17ff73684035c731fb",
+  "guest_type": "Couple",
+  "average_reviewer_score": 9.53
+}
+```

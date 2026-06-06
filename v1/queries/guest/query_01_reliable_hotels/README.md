@@ -1,6 +1,20 @@
-// Koji hoteli u izabranom gradu imaju visoku prosecnu ocenu i barem 100 recenzija.
-// za reliability score koriscena formula Bayesian Average
-// review_count / (review_count + 100) * hotel_average + 100 / (review_count + 100) * city_average
+# Q1 - Reliable hotels
+
+## Sta upit radi
+
+Upit pronalazi top 10 najpouzdanijih hotela u izabranom gradu, u ovom primeru u Amsterdamu. 
+Da bi se hotel nasao u listi, mora imati barem 100 recenzija
+Pouzdanost se racuna pomocu Bayesian Average formule.
+
+Formula:
+
+```text
+review_count / (review_count + 100) * hotel_average + 100 / (review_count + 100) * city_average
+```
+
+## Kod upita
+
+```js
 
 db.v1_reviews.aggregate(
 [
@@ -115,3 +129,38 @@ db.v1_reviews.aggregate(
     $limit: 10
   }
 ]);
+```
+
+## Sta usporava upit
+
+
+- `$lookup` ka `v1_hotels` za svaku recenziju
+- `$facet`, jer se paralelno racunaju statistika grada i statistika hotela
+- `$group` po hotelu za racunanje proseka i broja recenzija
+- Racunanje `reliability_score`
+
+U optimizovanoj v2 semi ova polja su unapred izracunata u `v2_hotels_guest`.
+
+## Explain plan i vreme izvrsavanja
+
+Vreme izvrsavanja : **25892 ms**
+
+![Explain plan 1](q1_v1_explain1.png)
+
+![Explain plan 2](q1_v1_explain2.png)
+
+## Primer izlaznog dokumenta
+
+```json
+{
+  "hotel_id": "6a1ffc17ff73684035c731fb",
+  "hotel_name": "The Toren",
+  "address": "Keizersgracht 164 Amsterdam City Center 1015 CZ Amsterdam Netherlands",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "average_reviewer_score": 9.46,
+  "review_count": 400.0,
+  "city_average_score": 8.46,
+  "reliability_score": 9.2559
+}
+```

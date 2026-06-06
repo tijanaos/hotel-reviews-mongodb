@@ -1,5 +1,14 @@
-// Koji hoteli imaju najčešće negativne komentare o problemima kao što su buka, mala soba, 
-// loša čistoća, neudoban krevet, klima ili Wi-Fi?   
+# Q4 - Common problems
+
+## Sta upit radi
+
+Upit pronalazi najcesce probleme koji se pominju u negativnim recenzijama hotela u Amsterdamu. Problemi se prepoznaju preko kljucnih reci i svrstavaju u kategorije kao sto su `noise`, `small_room`, `cleanliness`, `bed`, `air_conditioning` i `wifi`.
+
+Rezultat predstavlja kombinaciju hotel + tip problema, sa brojem recenzija, procentom negativnih recenzija i prosecnom ocenom tih recenzija.
+
+## Kod upita
+
+```js
 
 db.v1_reviews.aggregate(
   [
@@ -201,3 +210,38 @@ db.v1_reviews.aggregate(
     allowDiskUse: true
   }
 );
+```
+
+## Sta usporava upit
+
+- `$lookup` ka `v1_hotels`
+- Pretvaranje svake negativne recenzije u mala slova
+- `$regexMatch` provere
+- `$setUnion`, `$unwind` i `$group` po kombinaciji hotel + problem.
+
+U v2 semi su ovi rezultati unapred izracunati u `problem_stats`, pa se u upitu upitu ne radi regex
+
+## Explain plan i vreme izvrsavanja
+
+Vreme izvrsavanja iz: **24546 ms**.
+
+![Explain plan 1](q4_v1_explain1.png)
+
+![Explain plan 2](q4_v1_explain2.png)
+
+## Primer izlaznog dokumenta
+
+```json
+{
+  "hotel_name": "Albus Hotel Amsterdam City Centre",
+  "address": "Vijzelstraat 49 Amsterdam City Center 1017 HE Amsterdam Netherlands",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "total_hotel_reviews": 564,
+  "problem_review_count": 37.0,
+  "hotel_id": "6a1ffc17ff73684035c733a3",
+  "problem_type": "noise",
+  "problem_review_percentage": 6.56,
+  "average_problem_reviewer_score": 7.41
+}
+```

@@ -21,85 +21,15 @@
                         ]
                     },
                     "queryHash" : "C295F8C7",
-                    "planCacheKey" : "7B88779C",
-                    "optimizationTimeMillis" : 1,
+                    "planCacheKey" : "0B822B11",
+                    "optimizationTimeMillis" : 0,
                     "maxIndexedOrSolutionsReached" : false,
                     "maxIndexedAndSolutionsReached" : false,
                     "maxScansToExplodeReached" : false,
                     "winningPlan" : {
-                        "stage" : "PROJECTION_SIMPLE",
-                        "transformBy" : {
-                            "_id" : 1,
-                            "address" : 1,
-                            "average_reviewer_score" : 1,
-                            "city" : 1,
-                            "city_average_score" : 1,
-                            "country" : 1,
-                            "name" : 1,
-                            "reliability_score" : 1,
-                            "review_count" : 1
-                        },
+                        "stage" : "LIMIT",
+                        "limitAmount" : 10,
                         "inputStage" : {
-                            "stage" : "FETCH",
-                            "inputStage" : {
-                                "stage" : "SORT",
-                                "sortPattern" : {
-                                    "reliability_score" : -1,
-                                    "average_reviewer_score" : -1,
-                                    "review_count" : -1
-                                },
-                                "memLimit" : 104857600,
-                                "limitAmount" : 10,
-                                "type" : "default",
-                                "inputStage" : {
-                                    "stage" : "IXSCAN",
-                                    "keyPattern" : {
-                                        "city" : 1,
-                                        "review_count" : 1,
-                                        "reliability_score" : -1,
-                                        "average_reviewer_score" : -1
-                                    },
-                                    "indexName" : "idx_hotels_city_reliability",
-                                    "isMultiKey" : false,
-                                    "multiKeyPaths" : {
-                                        "city" : [
-
-                                        ],
-                                        "review_count" : [
-
-                                        ],
-                                        "reliability_score" : [
-
-                                        ],
-                                        "average_reviewer_score" : [
-
-                                        ]
-                                    },
-                                    "isUnique" : false,
-                                    "isSparse" : false,
-                                    "isPartial" : false,
-                                    "indexVersion" : 2,
-                                    "direction" : "forward",
-                                    "indexBounds" : {
-                                        "city" : [
-                                            "[\"Amsterdam\", \"Amsterdam\"]"
-                                        ],
-                                        "review_count" : [
-                                            "[100.0, inf.0]"
-                                        ],
-                                        "reliability_score" : [
-                                            "[MaxKey, MinKey]"
-                                        ],
-                                        "average_reviewer_score" : [
-                                            "[MaxKey, MinKey]"
-                                        ]
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "rejectedPlans" : [
-                        {
                             "stage" : "PROJECTION_SIMPLE",
                             "transformBy" : {
                                 "_id" : 1,
@@ -113,137 +43,14 @@
                                 "review_count" : 1
                             },
                             "inputStage" : {
-                                "stage" : "SORT",
-                                "sortPattern" : {
-                                    "reliability_score" : -1,
-                                    "average_reviewer_score" : -1,
-                                    "review_count" : -1
-                                },
-                                "memLimit" : 104857600,
-                                "limitAmount" : 10,
-                                "type" : "simple",
-                                "inputStage" : {
-                                    "stage" : "FETCH",
-                                    "filter" : {
-                                        "review_count" : {
-                                            "$gte" : 100.0
-                                        }
-                                    },
-                                    "inputStage" : {
-                                        "stage" : "IXSCAN",
-                                        "keyPattern" : {
-                                            "city" : 1,
-                                            "problem_stats.problem_type" : 1
-                                        },
-                                        "indexName" : "idx_hotels_city_problem_type",
-                                        "isMultiKey" : true,
-                                        "multiKeyPaths" : {
-                                            "city" : [
-
-                                            ],
-                                            "problem_stats.problem_type" : [
-                                                "problem_stats"
-                                            ]
-                                        },
-                                        "isUnique" : false,
-                                        "isSparse" : false,
-                                        "isPartial" : false,
-                                        "indexVersion" : 2,
-                                        "direction" : "forward",
-                                        "indexBounds" : {
-                                            "city" : [
-                                                "[\"Amsterdam\", \"Amsterdam\"]"
-                                            ],
-                                            "problem_stats.problem_type" : [
-                                                "[MinKey, MaxKey]"
-                                            ]
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                "executionStats" : {
-                    "executionSuccess" : true,
-                    "nReturned" : 10,
-                    "executionTimeMillis" : 1,
-                    "totalKeysExamined" : 99,
-                    "totalDocsExamined" : 10,
-                    "executionStages" : {
-                        "stage" : "PROJECTION_SIMPLE",
-                        "nReturned" : 10,
-                        "executionTimeMillisEstimate" : 0,
-                        "works" : 111,
-                        "advanced" : 10,
-                        "needTime" : 100,
-                        "needYield" : 0,
-                        "saveState" : 1,
-                        "restoreState" : 1,
-                        "isEOF" : 1,
-                        "transformBy" : {
-                            "_id" : 1,
-                            "address" : 1,
-                            "average_reviewer_score" : 1,
-                            "city" : 1,
-                            "city_average_score" : 1,
-                            "country" : 1,
-                            "name" : 1,
-                            "reliability_score" : 1,
-                            "review_count" : 1
-                        },
-                        "inputStage" : {
-                            "stage" : "FETCH",
-                            "nReturned" : 10,
-                            "executionTimeMillisEstimate" : 0,
-                            "works" : 111,
-                            "advanced" : 10,
-                            "needTime" : 100,
-                            "needYield" : 0,
-                            "saveState" : 1,
-                            "restoreState" : 1,
-                            "isEOF" : 1,
-                            "docsExamined" : 10,
-                            "alreadyHasObj" : 0,
-                            "inputStage" : {
-                                "stage" : "SORT",
-                                "nReturned" : 10,
-                                "executionTimeMillisEstimate" : 0,
-                                "works" : 111,
-                                "advanced" : 10,
-                                "needTime" : 100,
-                                "needYield" : 0,
-                                "saveState" : 1,
-                                "restoreState" : 1,
-                                "isEOF" : 1,
-                                "sortPattern" : {
-                                    "reliability_score" : -1,
-                                    "average_reviewer_score" : -1,
-                                    "review_count" : -1
-                                },
-                                "memLimit" : 104857600,
-                                "limitAmount" : 10,
-                                "type" : "default",
-                                "totalDataSizeSorted" : 1830,
-                                "usedDisk" : false,
-                                "spills" : 0,
-                                "spilledDataStorageSize" : 0,
+                                "stage" : "FETCH",
                                 "inputStage" : {
                                     "stage" : "IXSCAN",
-                                    "nReturned" : 99,
-                                    "executionTimeMillisEstimate" : 0,
-                                    "works" : 100,
-                                    "advanced" : 99,
-                                    "needTime" : 0,
-                                    "needYield" : 0,
-                                    "saveState" : 1,
-                                    "restoreState" : 1,
-                                    "isEOF" : 1,
                                     "keyPattern" : {
                                         "city" : 1,
-                                        "review_count" : 1,
                                         "reliability_score" : -1,
-                                        "average_reviewer_score" : -1
+                                        "average_reviewer_score" : -1,
+                                        "review_count" : -1
                                     },
                                     "indexName" : "idx_hotels_city_reliability",
                                     "isMultiKey" : false,
@@ -251,13 +58,13 @@
                                         "city" : [
 
                                         ],
-                                        "review_count" : [
-
-                                        ],
                                         "reliability_score" : [
 
                                         ],
                                         "average_reviewer_score" : [
+
+                                        ],
+                                        "review_count" : [
 
                                         ]
                                     },
@@ -270,17 +77,130 @@
                                         "city" : [
                                             "[\"Amsterdam\", \"Amsterdam\"]"
                                         ],
+                                        "reliability_score" : [
+                                            "[MaxKey, MinKey]"
+                                        ],
+                                        "average_reviewer_score" : [
+                                            "[MaxKey, MinKey]"
+                                        ],
                                         "review_count" : [
-                                            "[100.0, inf.0]"
+                                            "[inf.0, 100.0]"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "rejectedPlans" : [
+
+                    ]
+                },
+                "executionStats" : {
+                    "executionSuccess" : true,
+                    "nReturned" : 10,
+                    "executionTimeMillis" : 0,
+                    "totalKeysExamined" : 10,
+                    "totalDocsExamined" : 10,
+                    "executionStages" : {
+                        "stage" : "LIMIT",
+                        "nReturned" : 10,
+                        "executionTimeMillisEstimate" : 0,
+                        "works" : 11,
+                        "advanced" : 10,
+                        "needTime" : 0,
+                        "needYield" : 0,
+                        "saveState" : 1,
+                        "restoreState" : 1,
+                        "isEOF" : 1,
+                        "limitAmount" : 10,
+                        "inputStage" : {
+                            "stage" : "PROJECTION_SIMPLE",
+                            "nReturned" : 10,
+                            "executionTimeMillisEstimate" : 0,
+                            "works" : 10,
+                            "advanced" : 10,
+                            "needTime" : 0,
+                            "needYield" : 0,
+                            "saveState" : 1,
+                            "restoreState" : 1,
+                            "isEOF" : 0,
+                            "transformBy" : {
+                                "_id" : 1,
+                                "address" : 1,
+                                "average_reviewer_score" : 1,
+                                "city" : 1,
+                                "city_average_score" : 1,
+                                "country" : 1,
+                                "name" : 1,
+                                "reliability_score" : 1,
+                                "review_count" : 1
+                            },
+                            "inputStage" : {
+                                "stage" : "FETCH",
+                                "nReturned" : 10,
+                                "executionTimeMillisEstimate" : 0,
+                                "works" : 10,
+                                "advanced" : 10,
+                                "needTime" : 0,
+                                "needYield" : 0,
+                                "saveState" : 1,
+                                "restoreState" : 1,
+                                "isEOF" : 0,
+                                "docsExamined" : 10,
+                                "alreadyHasObj" : 0,
+                                "inputStage" : {
+                                    "stage" : "IXSCAN",
+                                    "nReturned" : 10,
+                                    "executionTimeMillisEstimate" : 0,
+                                    "works" : 10,
+                                    "advanced" : 10,
+                                    "needTime" : 0,
+                                    "needYield" : 0,
+                                    "saveState" : 1,
+                                    "restoreState" : 1,
+                                    "isEOF" : 0,
+                                    "keyPattern" : {
+                                        "city" : 1,
+                                        "reliability_score" : -1,
+                                        "average_reviewer_score" : -1,
+                                        "review_count" : -1
+                                    },
+                                    "indexName" : "idx_hotels_city_reliability",
+                                    "isMultiKey" : false,
+                                    "multiKeyPaths" : {
+                                        "city" : [
+
+                                        ],
+                                        "reliability_score" : [
+
+                                        ],
+                                        "average_reviewer_score" : [
+
+                                        ],
+                                        "review_count" : [
+
+                                        ]
+                                    },
+                                    "isUnique" : false,
+                                    "isSparse" : false,
+                                    "isPartial" : false,
+                                    "indexVersion" : 2,
+                                    "direction" : "forward",
+                                    "indexBounds" : {
+                                        "city" : [
+                                            "[\"Amsterdam\", \"Amsterdam\"]"
                                         ],
                                         "reliability_score" : [
                                             "[MaxKey, MinKey]"
                                         ],
                                         "average_reviewer_score" : [
                                             "[MaxKey, MinKey]"
+                                        ],
+                                        "review_count" : [
+                                            "[inf.0, 100.0]"
                                         ]
                                     },
-                                    "keysExamined" : 99,
+                                    "keysExamined" : 10,
                                     "seeks" : 1,
                                     "dupsTested" : 0,
                                     "dupsDropped" : 0
@@ -311,7 +231,7 @@
         }
     ],
     "serverInfo" : {
-        "host" : "0b4c35b42167",
+        "host" : "56ae00cafb23",
         "port" : 27017,
         "version" : "7.0.34",
         "gitVersion" : "ed9a6630253d3bc301e5ef19606704715d1e2066"

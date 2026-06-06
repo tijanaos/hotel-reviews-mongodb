@@ -1,10 +1,22 @@
-// Top 10 hotela sa prosecnom ocenom vecom od 8 se nalaze u krugu od 100 kilometara od moje trenutne lokacije? 
-// Koristi se Haversine formula
-// distance = R * 2 * asin(sqrt(sin²(deltaLat / 2)+cos(lat1) * cos(lat2) * sin²(deltaLng / 2)))
-// lat 1, lng 1 - lokacija gosta
-// lat 2, lng 2 - lokacija hotela
-// deltaLat - razlika u latitude
-// deltaLng - razlika u longitude
+# Q5 - Hotels near me
+
+## Sta upit radi
+
+Upit pronalazi top 10 hotela koji se nalaze u krugu od 100 kilometara od zadate lokacije korisnika. U ovom primeru korisnikova lokacija je `[9.1900, 45.4642]`, odnosno Milano. Hotel mora da ima bar 100 recenzija i prosecnu ocenu gostiju vecu ili jednaku `8.0`.
+
+Udaljenost se racuna Haversine formulom direktno.
+
+Formula:
+distance = R * 2 * asin(sqrt(sin2(deltaLat / 2)+cos(lat1) * cos(lat2) * sin2(deltaLng / 2)))
+lat 1, lng 1 - lokacija gosta
+lat 2, lng 2 - lokacija hotela
+deltaLat - razlika u latitude
+deltaLng - razlika u longitude
+
+## Kod upita
+
+```js
+
 
 db.v1_hotels.aggregate([
   {
@@ -159,3 +171,42 @@ db.v1_hotels.aggregate([
     }
   }
 ]);
+```
+
+## Sta usporava upit
+
+- Racunanje Haversine uradljenosti od svakog hotela
+- Nne koristi se `$geoNear`.
+- `$lookup` ka recenzijama kako bi se izracunao prosek
+
+U v2 semi se koristi `location: "2dsphere"` indeks i `$geoNear`, a `average_reviewer_score` je unapred sacuvan u hotel dokumentu
+
+## Explain plan i vreme izvrsavanja
+
+Vreme izvrsavanja iz : **44538 ms**.
+
+![Explain plan 1](q5_v1_explain1.png)
+
+![Explain plan 2](q5_v1_explain2.png)
+
+## Primer izlaznog dokumenta
+
+```json
+{
+  "address": "Via Silvio Pellico 2 Milan City Center 20121 Milan Italy",
+  "city": "Milan",
+  "country": "Italy",
+  "total_number_of_reviews": 336,
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      9.1893265,
+      45.4648822
+    ]
+  },
+  "hotel_id": "6a1ffc17ff73684035c7337f",
+  "hotel_name": "TownHouse Duomo",
+  "average_reviewer_score": 8.44,
+  "distance_km": 0.09
+}
+```
