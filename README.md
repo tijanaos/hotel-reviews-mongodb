@@ -230,6 +230,10 @@ Analiza obuhvata sledeće korake:
 - `$sort`: Sortira rezultate hronološki po godini i mesecu.
 - Završni `$project`: Uklanja interno `_id` polje i oblikuje rezultat da bude čitljiviji za prikaz.
 
+ <img width="1366" height="243" alt="Screenshot 2026-06-07 at 19 57 13" src="https://github.com/user-attachments/assets/74365f49-84f2-49fd-8bcf-9d99ce9c3f47" />
+
+<img width="1211" height="237" alt="Screenshot 2026-06-07 at 19 57 17" src="https://github.com/user-attachments/assets/91a47bc1-65ce-422f-9dc8-50c2f224cd40" />
+
 **Optimizacija:**
 
 Optimizacija je postignuta uz pomoć narednih koraka:
@@ -240,15 +244,17 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 4. Podrška indeksa: Indeks `db.v2_reviews.createIndex({ hotel_name: 1, review_year: 1, review_month: 1 })` ubrzava filtriranje i kasnije sortiranje po vremenskoj dimenziji.
 5. Dodatna optimizacija preko izvedene kolekcije: U projektu postoji i kolekcija `v2_hotel_time_stats`, koja ovaj tip vremenske analize dodatno pojednostavljuje jer već čuva mesečne agregate po hotelu.
 
+<img width="1368" height="290" alt="Screenshot 2026-06-07 at 19 58 13" src="https://github.com/user-attachments/assets/b8f6e938-899b-4421-9d33-f23af4bddc7e" />
+
 **Objašnjenje pipeline-a nakon optimizacije, korak po korak:**
 
 - `$match`: Odmah bira samo recenzije za `Hotel Arena` koje već imaju izdvojene vrednosti `review_year` i `review_month`.
 - `$group`: Grupiše dokumente direktno po unapred sačuvanoj godini i mesecu i računa prosečnu ocenu i broj recenzija.
 - `$sort`: Sortira rezultat po vremenskom redosledu.
 - `$project`: Formatira izlaz tako da se jasno vide godina, mesec, prosečna ocena i broj recenzija.
-
+  
 **Grafički prikaz rezultata:**
-<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/0178203d-e4a4-48de-bff9-fb0183b7c32d" />
+<img width="519" height="404" alt="Screenshot 2026-06-07 at 19 04 59" src="https://github.com/user-attachments/assets/d193d818-ae98-4bd1-bdef-ee539c5a8c2b" />
 
 ### Zadatak 2: Analiza ocena po nacionalnosti i godini
 
@@ -276,6 +282,10 @@ Analiza obuhvata sledeće korake:
 - `$group`: Za svaku kombinaciju godine i nacionalnosti računa prosečnu ocenu, ukupan broj recenzija, broj visokih i broj niskih ocena.
 - `$sort`: Sortira rezultat po godini, a zatim po prosečnoj oceni.
 - Završni `$project`: Prikazuje samo ona polja koja su relevantna za menadžerski izveštaj.
+  
+<img width="1365" height="243" alt="Screenshot 2026-06-07 at 20 00 05" src="https://github.com/user-attachments/assets/da212419-264d-4685-b75c-6f79482ebc4a" />
+
+<img width="1212" height="247" alt="Screenshot 2026-06-07 at 20 00 07" src="https://github.com/user-attachments/assets/915cfea7-a748-4b52-b58b-f2923be9340c" />
 
 **Optimizacija:**
 
@@ -293,12 +303,15 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 - `$group`: Neposredno grupiše po `review_year` i `reviewer_nationality`, bez dodatnog spajanja sa hotelima i bez računanja godine.
 - `$sort`: Sortira rezultate po godini i prosečnoj oceni.
 - `$project`: Formatira rezultat za pregled nacionalnosti, ocena i broja recenzija.
+  
+<img width="1369" height="250" alt="Screenshot 2026-06-07 at 20 02 55" src="https://github.com/user-attachments/assets/f8621e73-c2b7-4106-a796-1dedb96c128f" />
 
 **Grafički prikaz rezultata:**
-<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/07b00743-2b97-4f88-9677-4c46cf580418" />
 
+<img width="1048" height="685" alt="Screenshot 2026-06-07 at 19 05 12" src="https://github.com/user-attachments/assets/f2494046-be5e-4909-9ca6-e75d2893721f" />
 
-<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/7b4cc24a-9604-4f70-8546-547bb4e3bae3" />
+<img width="523" height="407" alt="Screenshot 2026-06-07 at 19 04 42" src="https://github.com/user-attachments/assets/a35d08d8-1c6d-499a-80b7-dc4c7fb6ddf5" />
+
 
 
 ### Zadatak 3: Najčešće teme negativnih komentara u poslednjoj godini
@@ -339,6 +352,10 @@ Analiza obuhvata sledeće korake:
 - `$sort`: Sortira ključne reči po učestalosti.
 - `$limit`: Zadržava samo prvih 20 najčešćih tema.
 
+<img width="1366" height="238" alt="Screenshot 2026-06-07 at 19 12 42" src="https://github.com/user-attachments/assets/f8594626-e498-48bd-a049-3f34f480c6a0" />
+
+<img width="1367" height="239" alt="Screenshot 2026-06-07 at 19 13 00" src="https://github.com/user-attachments/assets/4a8da589-1db3-4f2f-9349-ee6bcd1864a7" />
+
 **Optimizacija:**
 
 Optimizacija je postignuta uz pomoć narednih koraka:
@@ -358,8 +375,12 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 - `$sort`: Sortira rezultate po broju pojavljivanja.
 - `$limit`: Vraća prvih 20 najčešćih negativnih tema.
 
+<img width="1366" height="237" alt="Screenshot 2026-06-07 at 19 16 08" src="https://github.com/user-attachments/assets/bc5940d9-cd29-4038-ba2a-8f2af2658ea4" />
+<img width="1180" height="239" alt="Screenshot 2026-06-07 at 19 16 10" src="https://github.com/user-attachments/assets/b7aa3549-55d6-4959-8175-d67633b9c63a" />
+
 **Grafički prikaz rezultata:**
-<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/7241c112-9306-4fae-8518-432ae020731d" />
+<img width="522" height="403" alt="Screenshot 2026-06-07 at 19 05 40" src="https://github.com/user-attachments/assets/aa95f436-ac16-4564-937c-66daea6dcf97" />
+
 
 ### Zadatak 4: Najčešći tagovi u visoko ocenjenim recenzijama
 
@@ -392,6 +413,9 @@ Analiza obuhvata sledeće korake:
 - Drugi `$group`: Za svaku godinu skuplja sortirane tagove u jednu listu.
 - Završni `$project`: Uzimaju se samo prvih 10 tagova za svaku godinu.
 - Završni `$sort`: Sortira godine rastuće radi preglednog prikaza.
+<img width="1367" height="232" alt="Screenshot 2026-06-07 at 20 01 30" src="https://github.com/user-attachments/assets/bd169e9a-26a5-4f3b-b648-5ae3276184dd" />
+
+<img width="1206" height="238" alt="Screenshot 2026-06-07 at 20 01 32" src="https://github.com/user-attachments/assets/608bb1ca-08ec-4547-8b71-d7afb137b5e9" />
 
 **Optimizacija:**
 
@@ -413,9 +437,13 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 - Drugi `$group`: Za svaku godinu formira listu tagova sa brojem pojavljivanja.
 - `$project`: Ostavlja samo top 10 tagova.
 - Završni `$sort`: Poređa rezultate po godinama.
+<img width="1368" height="249" alt="Screenshot 2026-06-07 at 20 24 37" src="https://github.com/user-attachments/assets/dc59ae6f-6557-4d78-8cb9-81c3669b45a6" />
+
+<img width="1222" height="242" alt="Screenshot 2026-06-07 at 20 06 00" src="https://github.com/user-attachments/assets/ed4f29d5-1a6f-4c50-9364-4486c5712d0c" />
 
 **Grafički prikaz rezultata:**
-<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/5c797281-3a5d-4833-87a6-83b1c3baf7ea" />
+<img width="519" height="404" alt="Screenshot 2026-06-07 at 19 05 20" src="https://github.com/user-attachments/assets/81a7ce66-20da-44f4-bd01-5eb8e1796f59" />
+
 
 ### Zadatak 5: Trendovi obližnjih hotela u odnosu na referentni hotel
 
@@ -450,6 +478,10 @@ Analiza obuhvata sledeće korake:
 - `$group`: Za svaki hotel i svaki mesec računa prosečnu ocenu i broj recenzija.
 - Završni `$sort`: Sortira rezultate po udaljenosti, godini i mesecu.
 - Završni `$project`: Oblikuje izlaz tako da bude spreman za pregled i poređenje.
+ 
+<img width="1367" height="250" alt="Screenshot 2026-06-07 at 20 11 55" src="https://github.com/user-attachments/assets/ecd463c1-f0d5-46f3-881f-9256a6e54ef2" />
+
+ <img width="1200" height="240" alt="Screenshot 2026-06-07 at 20 11 57" src="https://github.com/user-attachments/assets/de9d9d4f-cbdb-486b-ae31-102fc0f468fb" />
 
 **Optimizacija:**
 
@@ -471,9 +503,11 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 - `$match`: Zadržava samo mesečne statistike, pošto je to nivo analize koji se prikazuje.
 - `$project`: Priprema izlazna polja kao što su naziv hotela, udaljenost, godina, mesec, prosečna ocena i broj recenzija.
 - `$sort`: Sortira rezultate po udaljenosti i vremenskom redosledu.
+  
+<img width="1064" height="246" alt="Screenshot 2026-06-07 at 19 55 27" src="https://github.com/user-attachments/assets/40c4e27a-38f4-4f1c-9774-78dd78fff5ea" />
 
 **Grafički prikaz rezultata:**
-<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/cfb0a404-4f33-4544-9dda-282231eeac44" />
+<img width="1053" height="358" alt="Screenshot 2026-06-07 at 19 26 26" src="https://github.com/user-attachments/assets/0e168e7c-8d11-40e2-9e1a-cdbfb1aaa878" />
 
 ## Zaključak
 
