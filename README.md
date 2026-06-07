@@ -33,11 +33,13 @@ U ovoj verziji su upiti često morali da rade:
 
 ### Verzija v2
 
-Optimizovana verzija uvodi denormalizovana i unapred izračunata polja, kao i dodatne izvedene kolekcije:
+Optimizovana verzija uvodi denormalizovana i unapred izračunata polja:
 
 - `v2_hotels` - osnovni podaci o hotelima, uključujući geoprostornu lokaciju
 - `v2_reviews` - recenzije sa dodatim poljima `hotel_name`, `review_year`, `review_month`, `negative_keywords` i `tags`
 - `v2_hotel_time_stats` - unapred izračunata mesečna i godišnja statistika po hotelu
+- 
+Optimizovana verzija takodje uvodi i dodatne izvedene kolekcije, radi čuvanja dobijenih rezultata:
 - `v2_top_tags_by_year` - top tagovi po godini za dobro ocenjene recenzije
 - `v2_nationality_year_stats` - agregirana statistika po nacionalnosti i godini
 - `v2_nearby_hotel_trends` - unapred pripremljeni trendovi za obližnje hotele
