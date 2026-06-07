@@ -44,6 +44,87 @@ Optimizovana verzija takodje uvodi i dodatne izvedene kolekcije, radi čuvanja d
 - `v2_nationality_year_stats` - agregirana statistika po nacionalnosti i godini
 - `v2_nearby_hotel_trends` - unapred pripremljeni trendovi za obližnje hotele
 
+### Struktura šema u verziji v2
+
+U verziji `v2` svaka kolekcija ima jasno definisanu ulogu i skup polja:
+
+#### Kolekcija `v2_hotels`
+
+Sadrži osnovne podatke o hotelu:
+
+- `name` - naziv hotela
+- `address` - puna adresa hotela
+- `city` - grad izdvojen iz adrese
+- `country` - država izdvojena iz adrese
+- `average_score` - ukupna prosečna ocena hotela iz dataset-a
+- `total_number_of_reviews` - ukupan broj recenzija
+- `additional_number_of_scoring` - broj dodatnih ocenjivanja
+- `location` - GeoJSON objekat sa koordinatama u formatu `Point`
+
+#### Kolekcija `v2_reviews`
+
+Sadrži pojedinačne recenzije, zajedno sa poljima dodatim radi optimizacije:
+
+- `hotel_id` - referenca na hotel
+- `hotel_name` - naziv hotela dodat direktno u dokument
+- `review_date` - originalni datum recenzije
+- `review_year` - unapred izdvojena godina iz `review_date`
+- `review_month` - unapred izdvojen mesec iz `review_date`
+- `reviewer_score` - ocena koju je gost dao
+- `reviewer_nationality` - nacionalnost gosta
+- `negative_review` - originalni negativni komentar
+- `negative_keywords` - lista ključnih reči izdvojenih iz negativnog komentara
+- `tags` - lista tagova iz dataset-a
+
+#### Kolekcija `v2_hotel_time_stats`
+
+Sadrži unapred izračunate vremenske agregate za hotel:
+
+- `hotel_id` - referenca na hotel
+- `hotel_name` - naziv hotela
+- `period_type` - tip perioda, `month` ili `year`
+- `year` - godina perioda
+- `month` - mesec perioda, ili `null` kada je period godišnji
+- `avg_score` - prosečna ocena za dati period
+- `review_count` - broj recenzija u datom periodu
+
+#### Kolekcija `v2_top_tags_by_year`
+
+Sadrži unapred izračunate najčešće tagove po godini:
+
+- `hotel_id` - referenca na hotel
+- `hotel_name` - naziv hotela
+- `year` - godina
+- `top_tags` - lista objekata oblika `{ tag, count }`
+
+#### Kolekcija `v2_nationality_year_stats`
+
+Sadrži agregate po nacionalnosti i godini:
+
+- `hotel_id` - referenca na hotel
+- `hotel_name` - naziv hotela
+- `year` - godina
+- `nationality` - nacionalnost gosta
+- `avg_score` - prosečna ocena
+- `review_count` - broj recenzija
+- `high_score_count` - broj ocena većih od `8.5`
+- `low_score_count` - broj ocena manjih od `5`
+
+#### Kolekcija `v2_nearby_hotel_trends`
+
+Sadrži unapred pripremljene trendove za obližnje hotele:
+
+- `anchor_hotel_id` - referentni hotel
+- `anchor_hotel_name` - naziv referentnog hotela
+- `nearby_hotel_id` - obližnji hotel
+- `nearby_hotel_name` - naziv obližnjeg hotela
+- `distance_meters` - udaljenost između hotela u metrima
+- `hotel_average_score` - prosečna ukupna ocena obližnjeg hotela
+- `year` - godina
+- `month` - mesec
+- `avg_score` - prosečna ocena obližnjeg hotela u tom periodu
+- `review_count` - broj recenzija u tom periodu
+
 ## Izazovi i način rešavanja
 
 Tokom rada na menadžerskim upitima pojavilo se nekoliko tipičnih problema:
@@ -75,6 +156,18 @@ Naziv hotela je dodat direktno u `v2_reviews`. Na taj način je uklonjena potreb
 Za često ponavljane analize unapred je kreirana izvedena kolekcija:
 
 - `v2_hotel_time_stats`
+
+Šablon proračunavanja je primenjen i nad samim dokumentima recenzija, tako što se iz originalnog polja `review_date` unapred izdvajaju i čuvaju:
+
+- `review_year`
+- `review_month`
+
+Ova polja se ne računaju više tokom svakog pokretanja upita, već se izračunavaju jednom prilikom importa podataka i zatim direktno koriste za:
+
+- filtriranje po godini i mesecu
+- grupisanje po vremenskim periodima
+- kreiranje efikasnijih složenih indeksa
+- pojednostavljenje agregacionih pipeline-ova
 
 Ovim pristupom je deo računski zahtevnog posla premešten u proces importa, pa su analitički upiti postali kraći i znatno brži.
 
@@ -127,6 +220,16 @@ Analiza obuhvata sledeće korake:
 4. Grupisanje po vremenskom periodu: Recenzije se grupišu po godini i mesecu radi računanja prosečne ocene i broja recenzija.
 5. Sortiranje i prikaz rezultata: Rezultati se sortiraju hronološki i prikazuju u obliku pogodnom za analizu trenda.
 
+**Objašnjenje pipeline-a pre optimizacije, korak po korak:**
+
+- `$lookup`: Spaja svaki dokument iz `v1_reviews` sa odgovarajućim hotelom iz `v1_hotels` preko `hotel_id`.
+- `$unwind`: Pošto je rezultat `lookup` niz, ovaj korak ga pretvara u jedan konkretan objekat `hotel`.
+- `$match`: Filtrira samo recenzije koje pripadaju hotelu `Hotel Arena` i imaju popunjen datum recenzije.
+- `$project`: Izvlači godinu i mesec iz `review_date` i zadržava `reviewer_score`, jer su to jedina polja potrebna za dalju obradu.
+- `$group`: Grupiše sve recenzije po kombinaciji godina-mesec i za svaku grupu računa prosečnu ocenu i broj recenzija.
+- `$sort`: Sortira rezultate hronološki po godini i mesecu.
+- Završni `$project`: Uklanja interno `_id` polje i oblikuje rezultat da bude čitljiviji za prikaz.
+
 **Optimizacija:**
 
 Optimizacija je postignuta uz pomoć narednih koraka:
@@ -136,6 +239,13 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 3. Rano filtriranje: Upit odmah filtrira dokumente po `hotel_name`, `review_year` i `review_month`, pa se u dalju obradu šalje manji skup podataka.
 4. Podrška indeksa: Indeks `db.v2_reviews.createIndex({ hotel_name: 1, review_year: 1, review_month: 1 })` ubrzava filtriranje i kasnije sortiranje po vremenskoj dimenziji.
 5. Dodatna optimizacija preko izvedene kolekcije: U projektu postoji i kolekcija `v2_hotel_time_stats`, koja ovaj tip vremenske analize dodatno pojednostavljuje jer već čuva mesečne agregate po hotelu.
+
+**Objašnjenje pipeline-a nakon optimizacije, korak po korak:**
+
+- `$match`: Odmah bira samo recenzije za `Hotel Arena` koje već imaju izdvojene vrednosti `review_year` i `review_month`.
+- `$group`: Grupiše dokumente direktno po unapred sačuvanoj godini i mesecu i računa prosečnu ocenu i broj recenzija.
+- `$sort`: Sortira rezultat po vremenskom redosledu.
+- `$project`: Formatira izlaz tako da se jasno vide godina, mesec, prosečna ocena i broj recenzija.
 
 ### Zadatak 2: Analiza ocena po nacionalnosti i godini
 
@@ -154,6 +264,16 @@ Analiza obuhvata sledeće korake:
 5. Grupisanje po godini i nacionalnosti: Za svaku kombinaciju godine i nacionalnosti računa se prosečna ocena, ukupan broj recenzija, broj visokih ocena i broj niskih ocena.
 6. Sortiranje i projekcija: Rezultati se sortiraju i oblikuju za preglednu menadžersku analizu.
 
+**Objašnjenje pipeline-a pre optimizacije, korak po korak:**
+
+- `$lookup`: Spaja recenzije sa podacima o hotelu.
+- `$unwind`: Pretvara niz `hotel` u pojedinačni objekat.
+- `$match`: Zadržava samo recenzije za `Hotel Arena`, sa validnim datumom i popunjenom nacionalnošću gosta.
+- `$project`: Iz datuma izdvaja godinu i prosleđuje dalje nacionalnost i ocenu.
+- `$group`: Za svaku kombinaciju godine i nacionalnosti računa prosečnu ocenu, ukupan broj recenzija, broj visokih i broj niskih ocena.
+- `$sort`: Sortira rezultat po godini, a zatim po prosečnoj oceni.
+- Završni `$project`: Prikazuje samo ona polja koja su relevantna za menadžerski izveštaj.
+
 **Optimizacija:**
 
 Optimizacija je postignuta uz pomoć narednih koraka:
@@ -163,6 +283,13 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 3. Smanjenje broja operacija u agregaciji: Pošto nema spajanja i dodatne projekcije za datum, pipeline je kraći i lakši za izvršavanje.
 4. Podrška indeksa: Indeks `db.v2_reviews.createIndex({ hotel_name: 1, reviewer_nationality: 1, review_year: 1 })` ubrzava filtriranje nad dimenzijama koje se direktno koriste u analizi.
 5. Dodatni nivo optimizacije kroz izvedenu kolekciju: Kolekcija `v2_nationality_year_stats` već čuva izračunate agregate po hotelu, godini i nacionalnosti, pa se ova analiza može izvršiti i bez skeniranja svih pojedinačnih recenzija prilikom prikaza rezultata u Metabase-u.
+
+**Objašnjenje pipeline-a nakon optimizacije, korak po korak:**
+
+- `$match`: Na početku bira samo recenzije za konkretan hotel i samo one koje imaju unapred dostupnu godinu i nacionalnost.
+- `$group`: Neposredno grupiše po `review_year` i `reviewer_nationality`, bez dodatnog spajanja sa hotelima i bez računanja godine.
+- `$sort`: Sortira rezultate po godini i prosečnoj oceni.
+- `$project`: Formatira rezultat za pregled nacionalnosti, ocena i broja recenzija.
 
 ### Zadatak 3: Najčešće teme negativnih komentara u poslednjoj godini
 
@@ -185,6 +312,23 @@ Analiza obuhvata sledeće korake:
 9. Grupisanje i rangiranje: Ključne reči se grupišu, broje i sortiraju po učestalosti.
 10. Izdvajanje najvažnijih rezultata: Prikazuje se prvih 20 najčešćih negativnih tema.
 
+**Objašnjenje pipeline-a pre optimizacije, korak po korak:**
+
+- Prvi `aggregate` sa `$match` i `$group`: Najpre pronalazi poslednju godinu koja postoji u podacima.
+- `$match`: U glavnom upitu zadržava samo recenzije sa datumom i sa smislenim negativnim komentarom.
+- `$addFields`: Iz `review_date` računa `review_year` kako bi moglo da se filtrira po poslednjoj godini.
+- Drugi `$match`: Zadržava samo recenzije iz poslednje godine.
+- `$lookup`: Povezuje recenzije sa kolekcijom hotela.
+- `$unwind`: Pretvara niz hotela u jedan objekat.
+- Treći `$match`: Filtrira samo `Hotel Arena`.
+- Prvi `$project`: Tekst negativnog komentara razlaže na tokene pomoću regularnog izraza.
+- Drugi `$project`: Iz tokena uklanja stop reči i kratke nerelevantne izraze.
+- Treći `$project`: Uklanja duplikate reči unutar jedne recenzije.
+- `$unwind`: Pretvara niz ključnih reči u pojedinačne vrednosti kako bi se svaka mogla brojati.
+- `$group`: Broji koliko puta se svaka ključna reč pojavljuje.
+- `$sort`: Sortira ključne reči po učestalosti.
+- `$limit`: Zadržava samo prvih 20 najčešćih tema.
+
 **Optimizacija:**
 
 Optimizacija je postignuta uz pomoć narednih koraka:
@@ -194,6 +338,15 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 3. Rano filtriranje: Upit odmah bira recenzije za traženi hotel, poslednju godinu i dokumente koji zaista imaju `negative_keywords`.
 4. Jednostavnija agregacija: Nakon filtriranja ostaje samo `unwind`, `group`, `sort` i `limit`, što značajno smanjuje složenost pipeline-a.
 5. Podrška indeksa: Indeks `db.v2_reviews.createIndex({ hotel_name: 1, review_year: 1, review_month: 1 })` pomaže da se brzo izdvoje recenzije za traženi hotel i period.
+
+**Objašnjenje pipeline-a nakon optimizacije, korak po korak:**
+
+- Prvi `aggregate` sa `$match` i `$group`: Pronalazi poslednju godinu na osnovu već postojećeg polja `review_year`.
+- `$match`: Odmah bira recenzije za `Hotel Arena`, za poslednju godinu i samo dokumente koji imaju `negative_keywords`.
+- `$unwind`: Razdvaja niz `negative_keywords` na pojedinačne ključne reči.
+- `$group`: Računa koliko puta se svaka ključna reč pojavljuje.
+- `$sort`: Sortira rezultate po broju pojavljivanja.
+- `$limit`: Vraća prvih 20 najčešćih negativnih tema.
 
 ### Zadatak 4: Najčešći tagovi u visoko ocenjenim recenzijama
 
@@ -214,6 +367,19 @@ Analiza obuhvata sledeće korake:
 7. Sortiranje po značaju: Tagovi se sortiraju po godini i po broju pojavljivanja.
 8. Formiranje liste najvažnijih tagova: Za svaku godinu kreira se lista tagova i uzima se prvih 10.
 
+**Objašnjenje pipeline-a pre optimizacije, korak po korak:**
+
+- `$lookup`: Povezuje recenzije sa hotelima.
+- `$unwind`: Pretvara niz `hotel` u jedan objekat.
+- `$match`: Bira samo recenzije za `Hotel Arena`, sa visokom ocenom, validnim datumom i nepraznim tagovima.
+- `$project`: Izvlači godinu iz datuma i zadržava samo tagove kao relevantno polje za nastavak obrade.
+- `$unwind`: Svaki tag iz niza odvaja u poseban zapis.
+- Prvi `$group`: Broji koliko se puta svaki tag javlja po godini.
+- `$sort`: Sortira tagove po godini i po učestalosti.
+- Drugi `$group`: Za svaku godinu skuplja sortirane tagove u jednu listu.
+- Završni `$project`: Uzimaju se samo prvih 10 tagova za svaku godinu.
+- Završni `$sort`: Sortira godine rastuće radi preglednog prikaza.
+
 **Optimizacija:**
 
 Optimizacija je postignuta uz pomoć narednih koraka:
@@ -223,6 +389,17 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 3. Podrška indeksa: Indeks `db.v2_reviews.createIndex({ hotel_name: 1, reviewer_score: 1, review_year: 1 })` ubrzava pretragu visoko ocenjenih recenzija po hotelu i vremenu.
 4. Dodatna optimizacija kroz izvedenu kolekciju: Kolekcija `v2_top_tags_by_year` unapred čuva top tagove po hotelu i godini, pa se analiza može svesti na jednostavan `match` i `project`.
 5. Smanjenje obrade u realnom vremenu: Najskuplji deo, brojanje tagova po godini, može biti unapred pripremljen tokom importa.
+
+**Objašnjenje pipeline-a nakon optimizacije, korak po korak:**
+
+- `$match`: Na početku filtrira recenzije za `Hotel Arena`, visoke ocene, postojeću godinu i neprazne tagove.
+- `$project`: Preuzima već sačuvanu `review_year` vrednost kao `year` i zadržava tagove.
+- `$unwind`: Razdvaja sve tagove na pojedinačne vrednosti.
+- `$group`: Broji pojavljivanja svakog taga po godini.
+- `$sort`: Sortira tagove po godini i po frekvenciji.
+- Drugi `$group`: Za svaku godinu formira listu tagova sa brojem pojavljivanja.
+- `$project`: Ostavlja samo top 10 tagova.
+- Završni `$sort`: Poređa rezultate po godinama.
 
 ### Zadatak 5: Trendovi obližnjih hotela u odnosu na referentni hotel
 
@@ -244,6 +421,20 @@ Analiza obuhvata sledeće korake:
 8. Grupisanje po hotelu i vremenu: Za svaki hotel, godinu i mesec računa se prosečna ocena i broj recenzija.
 9. Konačno sortiranje i prikaz: Rezultati se prikazuju po udaljenosti i vremenskom redosledu.
 
+**Objašnjenje pipeline-a pre optimizacije, korak po korak:**
+
+- `$match`: Bira samo hotele koji imaju lokaciju i koji nisu `Hotel Arena`.
+- `$project`: Za svaki hotel računa ručno `distance_score` na osnovu koordinata i zadržava osnovna polja potrebna za nastavak.
+- `$sort`: Sortira hotele po izračunatoj udaljenosti.
+- `$limit`: Zadržava samo 10 najbližih hotela.
+- `$lookup`: Spaja izabrane hotele sa svim njihovim recenzijama.
+- `$unwind`: Razdvaja niz recenzija na pojedinačne dokumente.
+- Drugi `$match`: Ostavlja samo recenzije koje imaju validan datum.
+- Drugi `$project`: Izvlači godinu i mesec recenzije i priprema podatke za agregaciju.
+- `$group`: Za svaki hotel i svaki mesec računa prosečnu ocenu i broj recenzija.
+- Završni `$sort`: Sortira rezultate po udaljenosti, godini i mesecu.
+- Završni `$project`: Oblikuje izlaz tako da bude spreman za pregled i poređenje.
+
 **Optimizacija:**
 
 Optimizacija je postignuta uz pomoć narednih koraka:
@@ -253,6 +444,17 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 3. Prebacivanje vremenskih agregata u izvedenu kolekciju: Umesto spajanja sa svim pojedinačnim recenzijama, optimizovani upit koristi `v2_hotel_time_stats`, gde su mesečni proseci i broj recenzija već unapred izračunati.
 4. Smanjenje broja obrađenih dokumenata: Nakon `$geoNear` odmah se bira samo 10 najbližih hotela, pa se tek onda radi povezivanje sa vremenskom statistikom.
 5. Dodatna mogućnost potpune prekomputacije: U projektu postoji i kolekcija `v2_nearby_hotel_trends`, koja unapred čuva trendove najbližih hotela za svaki referentni hotel, čime se ova analiza može dodatno ubrzati.
+
+**Objašnjenje pipeline-a nakon optimizacije, korak po korak:**
+
+- `findOne`: Najpre pronalazi lokaciju hotela `Hotel Arena`, koja će biti referentna tačka za geoprostornu pretragu.
+- `$geoNear`: Pronalaži hotele najbliže referentnoj lokaciji i automatski računa udaljenost u metrima.
+- `$limit`: Odmah zadržava 10 najbližih hotela, čime se drastično smanjuje količina podataka za dalju obradu.
+- `$lookup`: Umesto pojedinačnih recenzija, spaja hotele sa unapred pripremljenom kolekcijom `v2_hotel_time_stats`.
+- `$unwind`: Razdvaja niz vremenskih statistika na pojedinačne zapise.
+- `$match`: Zadržava samo mesečne statistike, pošto je to nivo analize koji se prikazuje.
+- `$project`: Priprema izlazna polja kao što su naziv hotela, udaljenost, godina, mesec, prosečna ocena i broj recenzija.
+- `$sort`: Sortira rezultate po udaljenosti i vremenskom redosledu.
 
 ## Zaključak
 
