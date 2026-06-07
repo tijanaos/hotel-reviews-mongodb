@@ -247,6 +247,7 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 - `$sort`: Sortira rezultat po vremenskom redosledu.
 - `$project`: Formatira izlaz tako da se jasno vide godina, mesec, prosečna ocena i broj recenzija.
 
+**Grafički prikaz rezultata:**
 ### Zadatak 2: Analiza ocena po nacionalnosti i godini
 
 [Upit pre optimizacije](v1/queries/manager/Query2/Query2-Unoptimized.js) | [Upit nakon optimizacije](v2/queries/manager/Query2/Query2-Optimized.js)
@@ -290,6 +291,8 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 - `$group`: Neposredno grupiše po `review_year` i `reviewer_nationality`, bez dodatnog spajanja sa hotelima i bez računanja godine.
 - `$sort`: Sortira rezultate po godini i prosečnoj oceni.
 - `$project`: Formatira rezultat za pregled nacionalnosti, ocena i broja recenzija.
+
+**Grafički prikaz rezultata:**
 
 ### Zadatak 3: Najčešće teme negativnih komentara u poslednjoj godini
 
@@ -348,6 +351,8 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 - `$sort`: Sortira rezultate po broju pojavljivanja.
 - `$limit`: Vraća prvih 20 najčešćih negativnih tema.
 
+**Grafički prikaz rezultata:**
+
 ### Zadatak 4: Najčešći tagovi u visoko ocenjenim recenzijama
 
 [Upit pre optimizacije](v1/queries/manager/Query4/Query4-Unoptimized.js) | [Upit nakon optimizacije](v2/queries/manager/Query4/Query4-Optimized.js)
@@ -400,6 +405,8 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 - Drugi `$group`: Za svaku godinu formira listu tagova sa brojem pojavljivanja.
 - `$project`: Ostavlja samo top 10 tagova.
 - Završni `$sort`: Poređa rezultate po godinama.
+
+**Grafički prikaz rezultata:**
 
 ### Zadatak 5: Trendovi obližnjih hotela u odnosu na referentni hotel
 
@@ -455,6 +462,8 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 - `$match`: Zadržava samo mesečne statistike, pošto je to nivo analize koji se prikazuje.
 - `$project`: Priprema izlazna polja kao što su naziv hotela, udaljenost, godina, mesec, prosečna ocena i broj recenzija.
 - `$sort`: Sortira rezultate po udaljenosti i vremenskom redosledu.
+
+**Grafički prikaz rezultata:**
 
 ## Zaključak
 
