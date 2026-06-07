@@ -66,22 +66,19 @@ Optimizacija je rešena kombinacijom sledećih pristupa:
 
 U optimizovanom modelu korišćeni su sledeći šabloni:
 
-### Denormalizacija
+### Šablon proširene refernce:
 
-Naziv hotela, godina i mesec recenzije dodati su direktno u `v2_reviews`. Na taj način je uklonjena potreba da se za veliki broj upita radi dodatno spajanje sa kolekcijom hotela i dodatno računanje vremenskih atributa.
+Naziv hotela je dodat direktno u `v2_reviews`. Na taj način je uklonjena potreba da se za veliki broj upita radi dodatno spajanje sa kolekcijom hotela.
 
-### Precomputed / Computed Pattern
+### Šablon proračunavanja
 
-Za često ponavljane analize unapred su kreirane izvedene kolekcije:
+Za često ponavljane analize unapred je kreirana izvedena kolekcija:
 
 - `v2_hotel_time_stats`
-- `v2_top_tags_by_year`
-- `v2_nationality_year_stats`
-- `v2_nearby_hotel_trends`
 
 Ovim pristupom je deo računski zahtevnog posla premešten u proces importa, pa su analitički upiti postali kraći i znatno brži.
 
-### Preprocessing tekstualnih podataka
+### Pretprocesiranje tekstualnih podataka - Šablon proračunavanja
 
 Polje `negative_keywords` nastaje tokom importa iz `negative_review` tako što se:
 
@@ -108,11 +105,6 @@ db.v2_reviews.createIndex({ hotel_name: 1, reviewer_score: 1, review_year: 1 });
 db.v2_hotels.createIndex({ location: "2dsphere" });
 
 db.v2_hotel_time_stats.createIndex({ hotel_name: 1, period_type: 1, year: 1, month: 1 });
-db.v2_top_tags_by_year.createIndex({ hotel_name: 1, year: 1 });
-db.v2_nationality_year_stats.createIndex({ hotel_name: 1, year: 1, nationality: 1 });
-db.v2_nearby_hotel_trends.createIndex({ anchor_hotel_name: 1, distance_meters: 1 });
-db.v2_nearby_hotel_trends.createIndex({ anchor_hotel_name: 1, year: 1, month: 1 });
-db.v2_nearby_hotel_trends.createIndex({ nearby_hotel_name: 1, year: 1, month: 1 });
 ```
 
 ## Menadžerski upiti
