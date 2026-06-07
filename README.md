@@ -15,7 +15,7 @@ Svaki zapis predstavlja jednu recenziju gosta za određeni hotel.
 - Menadžer hotela (Jovana)
 - Gost hotela (Tijana)
 
-## Struktura modela
+## Struktura modela - Menadžer hotela
 
 ### Verzija v1
 
