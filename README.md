@@ -51,7 +51,7 @@ Tokom rada na menadžerskim upitima pojavilo se nekoliko tipičnih problema:
 - Veliki broj `lookup` i `unwind` operacija usporavao je izvršavanje upita.
 - Često računanje izvedenih vrednosti, kao što su godina i mesec iz datuma, povećavalo je broj operacija u pipeline-u.
 - Analiza slobodnog teksta nad poljem `negative_review` bila je skupa jer su tokenizacija, filtriranje stop reči i uklanjanje duplikata rađeni prilikom svakog pokretanja upita.
-- Upiti koji se često ponavljaju nad istim dimenzijama, kao što su hotel, godina, mesec, nacionalnost i tagovi, ponovo su obrađivali velike količine sirovih podataka.
+- Upiti koji se često ponavljaju nad istim dimenzijama, kao što su hotel, godina i mesec ponovo su obrađivali velike količine sirovih podataka.
 - Analiza udaljenosti između hotela u v1 verziji nije koristila geoprostorne mogućnosti baze, već ručno računanje distance.
 
 Optimizacija je rešena kombinacijom sledećih pristupa:
