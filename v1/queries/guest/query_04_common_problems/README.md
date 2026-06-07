@@ -1,10 +1,9 @@
-# Q4 - Common problems
+# Q4 - Cesti problemi u hotelima
 
 ## Sta upit radi
 
 Upit pronalazi najcesce probleme koji se pominju u negativnim recenzijama hotela u Amsterdamu. Problemi se prepoznaju preko kljucnih reci i svrstavaju u kategorije kao sto su `noise`, `small_room`, `cleanliness`, `bed`, `air_conditioning` i `wifi`.
 
-Rezultat predstavlja kombinaciju hotel + tip problema, sa brojem recenzija, procentom negativnih recenzija i prosecnom ocenom tih recenzija.
 
 ## Kod upita
 
@@ -217,7 +216,7 @@ db.v1_reviews.aggregate(
 - `$lookup` ka `v1_hotels`
 - Pretvaranje svake negativne recenzije u mala slova
 - `$regexMatch` provere
-- `$setUnion`, `$unwind` i `$group` po kombinaciji hotel + problem.
+- `$setUnion`, `$unwind` i `$group` za svaki hotel + problem
 
 U v2 semi su ovi rezultati unapred izracunati u `problem_stats`, pa se u upitu upitu ne radi regex
 
@@ -230,6 +229,8 @@ Vreme izvrsavanja iz: **24546 ms**.
 ![Explain plan 2](q4_v1_explain2.png)
 
 ## Primer izlaznog dokumenta
+
+Rezultat je kombinacija hotel + tip problema, sa brojem recenzija, procentom negativnih recenzija i prosecnom ocenom tih recenzija.
 
 ```json
 {

@@ -5,10 +5,6 @@ db.v2_hotels_guest.createIndex(
 )
 
 // q2
-// hotel.city (equality) filtrira po gradu na embedded polju
-// guest_types (multikey) — MongoDB indeksira svaki element
-// arraya, sto omogucava direktan match na "couple", "solo" itd.
-// bez ovog indeksa: COLLSCAN nad celom v2_reviews_guest kolekcijom
 db.v2_reviews_guest.createIndex(
   { "hotel.city": 1, guest_types: 1 },
   { name: "idx_reviews_city_guest_types" }

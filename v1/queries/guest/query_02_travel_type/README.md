@@ -1,4 +1,4 @@
-# Q2 - Hotels by guest type
+# Q2 - Hoteli po tipu gostiju
 
 ## Sta upit radi
 
@@ -73,7 +73,6 @@ db.v1_reviews.aggregate(
 ## Sta usporava upit
 
 - `$lookup` ka `v1_hotels`
-- `$unwind` posle lookup-a
 - Grupisanje po hotelu da bi se izracunali prosecna ocena i broj recenzija parova
 
 U v2 semi se koristi `v2_reviews_guest`, gde su osnovna polja hotela sacuvana u recenziji, a tip gosta je unapred izveden u `guest_types`

@@ -1,11 +1,11 @@
-# Q5 - Hotels near me
+# Q5 - Hoteli u mojoj blizini
 
 ## Sta ubrzava upit
 
 Upit je ubrzan geospatial indeksom. 
 U `v2_hotels_guest` je `average_reviewer_score` vec sacuvan u dokumentu hotela, pa nema potrebe za lookup-om ka recenzijama.
 
-Za pretragu po lokaciji koristi se `2dsphere` indeks:
+Koristi se `2dsphere` indeks:
 
 ```js
 idx_hotels_location_2dsphere
@@ -55,7 +55,7 @@ db.v2_hotels_guest.aggregate([
 
 Vreme izvrsavanja: **4 ms**.
 
-Explain plan pokazuje koriscenje indeksa `idx_hotels_location_2dsphere`, sa `totalKeysExamined: 244` i `totalDocsExamined: 324`.
+Explain plan pokazuje koriscenje indeksa `idx_hotels_location_2dsphere`.
 
 ## Explain plan
 

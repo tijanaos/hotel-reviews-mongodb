@@ -1,8 +1,9 @@
-# Q4 - Common problems
+# Q4 - Cesti problemi u hotelima
 
 ## Sta ubrzava upit
 
-Upit je ubrzan time sto se problemi iz negativnih recenzija vise ne detektuju u toku izvrsavanja upita. U `v2_hotels_guest` su problem statistike unapred izracunate i sacuvane u hotel dokumentu:
+Sablon proracunavanja i sablon atributa.
+Upit je ubrzan time sto se problemi iz negativnih recenzija vise ne detektuju u toku izvrsavanja upita. U `v2_hotels_guest` su statistike o problemu unapred izracunate i sacuvane u hotel dokumentu:
 
 ```js
 problem_stats: [
@@ -14,8 +15,6 @@ problem_stats: [
   }
 ]
 ```
-
-To kombinuje sablon proracunavanja i sablon atributa.
 
 Koriscen je indeks:
 
@@ -72,8 +71,6 @@ db.v2_hotels_guest.aggregate([
 ## Vreme izvrsavanja
 
 Vreme izvrsavanja: **2 ms**.
-
-Explain plan pokazuje `totalKeysExamined: 105` i `totalDocsExamined: 105`.
 
 ## Explain plan
 

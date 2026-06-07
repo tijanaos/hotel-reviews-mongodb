@@ -1,4 +1,4 @@
-# Q3 - Recent reviews
+# Q3 - Skorije recenzije
 
 ## Sta ubrzava upit
 
@@ -11,7 +11,7 @@ recent_average_score
 
 To je sablon podskupa: ne cuvaju se sve recenzije u hotel dokumentu, nego samo poslednjih 10 recenzija.
 
-Za brzo pronalazenje hotela koristi se zajednicki indeks nad `v2_hotels_guest` koji pocinje sa `city`. U  explain planu koriscen je:
+Koriscen je indeks:
 
 ```js
 idx_hotels_city_reliability
@@ -51,8 +51,6 @@ db.v2_hotels_guest.aggregate([
 ## Vreme izvrsavanja
 
 Vreme izvrsavanja iz: **0 ms**.
-
-Explain plan pokazuje`totalKeysExamined: 105`, `totalDocsExamined: 105`.
 
 ## Explain plan
 

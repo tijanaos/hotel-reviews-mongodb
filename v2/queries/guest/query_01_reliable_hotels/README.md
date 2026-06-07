@@ -1,4 +1,4 @@
-# Q1 - Reliable hotels
+# Q1 - Pouzdani hoteli
 
 ## Sta ubrzava upit
 
@@ -57,9 +57,9 @@ db.v2_hotels_guest.aggregate([
 
 ## Vreme izvrsavanja
 
-Vreme izvrsavanja iz: **0 ms**.
+Vreme izvrsavanja: **0 ms**.
 
-Explain plan pokazuje koriscenje indeksa `idx_hotels_city_reliability`, sa `totalKeysExamined: 10` i `totalDocsExamined: 10`.
+Explain plan pokazuje koriscenje indeksa `idx_hotels_city_reliability`.
 
 ## Explain plan
 

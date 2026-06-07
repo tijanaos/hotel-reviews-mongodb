@@ -1,8 +1,8 @@
-# Q2 - Hotels by guest type
+# Q2 - Hoteli po tipu gostiju
 
 ## Sta ubrzava upit
 
-Upit je ubrzan kolekcijom `v2_reviews_guest`. U `v2` recenzija sadrzi prosirenu referencu na hotel:
+U `v2` recenzija sadrzi prosirenu referencu na hotel:
 
 ```js
 hotel: {
@@ -19,18 +19,12 @@ Pored toga, tip gosta je unapred izveden iz `tags` i sacuvan u polju:
 guest_types
 ```
 
-Zbog toga query moze direktno da filtrira po `hotel.city` i `guest_types`, bez lookup-a i bez parsiranja tagova u toku izvrsavanja.
+Zbog toga upit moze direktno da filtrira po `hotel.city` i `guest_types`, bez lookup-a i bez parsiranja tagova u toku izvrsavanja.
 
 Koristi se multikey compound indeks:
 
 ```js
 idx_reviews_city_guest_types
-```
-
-Indeks pokriva filter:
-
-```js
-{ "hotel.city": "Amsterdam", guest_types: "couple" }
 ```
 
 ## Kod upita
@@ -87,9 +81,9 @@ db.v2_reviews_guest.aggregate([
 
 ## Vreme izvrsavanja
 
-Vreme izvrsavanja iz : **97 ms**.
+Vreme izvrsavanja: **97 ms**.
 
-Explain plan pokazuje koriscenje `idx_reviews_city_guest_types`, sa `totalKeysExamined: 29347` i `totalDocsExamined: 29347`.
+Explain plan pokazuje koriscenje `idx_reviews_city_guest_types`.
 
 ## Explain plan
 

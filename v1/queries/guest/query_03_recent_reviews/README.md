@@ -1,4 +1,4 @@
-# Q3 - Recent reviews
+# Q3 - Skorije recenzije
 
 ## Sta upit radi
 

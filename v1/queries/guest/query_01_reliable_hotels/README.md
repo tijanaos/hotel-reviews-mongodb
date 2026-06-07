@@ -1,10 +1,10 @@
-# Q1 - Reliable hotels
+# Q1 - Pouzdani hoteli
 
 ## Sta upit radi
 
 Upit pronalazi top 10 najpouzdanijih hotela u izabranom gradu, u ovom primeru u Amsterdamu. 
-Da bi se hotel nasao u listi, mora imati barem 100 recenzija
-Pouzdanost se racuna pomocu Bayesian Average formule.
+Da bi se hotel nasao u listi, mora imati barem 100 recenzija.
+Pouzdanost (reliability_score) se racuna pomocu Bayesian Average formule.
 
 Formula:
 
