@@ -244,7 +244,6 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 4. Podrška indeksa: Indeks `db.v2_reviews.createIndex({ hotel_name: 1, review_year: 1, review_month: 1 })` ubrzava filtriranje i kasnije sortiranje po vremenskoj dimenziji.
 5. Dodatna optimizacija preko izvedene kolekcije: U projektu postoji i kolekcija `v2_hotel_time_stats`, koja ovaj tip vremenske analize dodatno pojednostavljuje jer već čuva mesečne agregate po hotelu.
 
-<img width="1368" height="290" alt="Screenshot 2026-06-07 at 19 58 13" src="https://github.com/user-attachments/assets/b8f6e938-899b-4421-9d33-f23af4bddc7e" />
 
 **Objašnjenje pipeline-a nakon optimizacije, korak po korak:**
 
@@ -252,7 +251,9 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 - `$group`: Grupiše dokumente direktno po unapred sačuvanoj godini i mesecu i računa prosečnu ocenu i broj recenzija.
 - `$sort`: Sortira rezultat po vremenskom redosledu.
 - `$project`: Formatira izlaz tako da se jasno vide godina, mesec, prosečna ocena i broj recenzija.
-  
+
+<img width="1368" height="290" alt="Screenshot 2026-06-07 at 19 58 13" src="https://github.com/user-attachments/assets/b8f6e938-899b-4421-9d33-f23af4bddc7e" />
+
 **Grafički prikaz rezultata:**
 <img width="519" height="404" alt="Screenshot 2026-06-07 at 19 04 59" src="https://github.com/user-attachments/assets/d193d818-ae98-4bd1-bdef-ee539c5a8c2b" />
 
