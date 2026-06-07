@@ -248,6 +248,8 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 - `$project`: Formatira izlaz tako da se jasno vide godina, mesec, prosečna ocena i broj recenzija.
 
 **Grafički prikaz rezultata:**
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/0178203d-e4a4-48de-bff9-fb0183b7c32d" />
+
 ### Zadatak 2: Analiza ocena po nacionalnosti i godini
 
 [Upit pre optimizacije](v1/queries/manager/Query2/Query2-Unoptimized.js) | [Upit nakon optimizacije](v2/queries/manager/Query2/Query2-Optimized.js)
@@ -293,6 +295,11 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 - `$project`: Formatira rezultat za pregled nacionalnosti, ocena i broja recenzija.
 
 **Grafički prikaz rezultata:**
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/07b00743-2b97-4f88-9677-4c46cf580418" />
+
+
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/7b4cc24a-9604-4f70-8546-547bb4e3bae3" />
+
 
 ### Zadatak 3: Najčešće teme negativnih komentara u poslednjoj godini
 
@@ -352,6 +359,7 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 - `$limit`: Vraća prvih 20 najčešćih negativnih tema.
 
 **Grafički prikaz rezultata:**
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/7241c112-9306-4fae-8518-432ae020731d" />
 
 ### Zadatak 4: Najčešći tagovi u visoko ocenjenim recenzijama
 
@@ -407,6 +415,7 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 - Završni `$sort`: Poređa rezultate po godinama.
 
 **Grafički prikaz rezultata:**
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/5c797281-3a5d-4833-87a6-83b1c3baf7ea" />
 
 ### Zadatak 5: Trendovi obližnjih hotela u odnosu na referentni hotel
 
@@ -464,6 +473,7 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 - `$sort`: Sortira rezultate po udaljenosti i vremenskom redosledu.
 
 **Grafički prikaz rezultata:**
+<img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/cfb0a404-4f33-4544-9dda-282231eeac44" />
 
 ## Zaključak
 
