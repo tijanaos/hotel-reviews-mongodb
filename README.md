@@ -162,7 +162,7 @@ Optimizacija je postignuta uz pomoć narednih koraka:
 2. Rano sužavanje skupa dokumenata: Filtriranje po hotelu, godini i nacionalnosti radi se na samom početku upita.
 3. Smanjenje broja operacija u agregaciji: Pošto nema spajanja i dodatne projekcije za datum, pipeline je kraći i lakši za izvršavanje.
 4. Podrška indeksa: Indeks `db.v2_reviews.createIndex({ hotel_name: 1, reviewer_nationality: 1, review_year: 1 })` ubrzava filtriranje nad dimenzijama koje se direktno koriste u analizi.
-5. Dodatni nivo optimizacije kroz izvedenu kolekciju: Kolekcija `v2_nationality_year_stats` već čuva izračunate agregate po hotelu, godini i nacionalnosti, pa se ova analiza može izvršiti i bez skeniranja svih pojedinačnih recenzija.
+5. Dodatni nivo optimizacije kroz izvedenu kolekciju: Kolekcija `v2_nationality_year_stats` već čuva izračunate agregate po hotelu, godini i nacionalnosti, pa se ova analiza može izvršiti i bez skeniranja svih pojedinačnih recenzija prilikom prikaza rezultata u Metabase-u.
 
 ### Zadatak 3: Najčešće teme negativnih komentara u poslednjoj godini
 
