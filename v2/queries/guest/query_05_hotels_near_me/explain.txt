@@ -999,7 +999,7 @@
                 "executionStats" : {
                     "executionSuccess" : true,
                     "nReturned" : 113,
-                    "executionTimeMillis" : 6,
+                    "executionTimeMillis" : 4,
                     "totalKeysExamined" : 244,
                     "totalDocsExamined" : 324,
                     "executionStages" : {
@@ -2268,7 +2268,7 @@
         }
     ],
     "serverInfo" : {
-        "host" : "0b4c35b42167",
+        "host" : "56ae00cafb23",
         "port" : 27017,
         "version" : "7.0.34",
         "gitVersion" : "ed9a6630253d3bc301e5ef19606704715d1e2066"

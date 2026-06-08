@@ -1,6 +1,4 @@
-// Q1 — Top 10 most reliable hotels in a city
-// v1: $lookup + $facet + runtime Bayesian formula
-// v2: pre-computed reliability_score → simple $match + $sort on v2_hotels_guest
+// Koji hoteli u izabranom gradu imaju visoku prosecnu ocenu i barem 100 recenzija.
 
 db.v2_hotels_guest.aggregate([
   {

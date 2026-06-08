@@ -1,6 +1,25 @@
-// Q3 — 10 most recent reviews for a specific hotel
-// v1: $lookup + $sort + $facet (latest_reviews + recent_score_summary + hotel_info)
-// v2: pre-embedded recent_reviews (Subset Pattern) → single document read on v2_hotels_guest
+# Q3 - Skorije recenzije
+
+## Sta ubrzava upit
+
+U `v2` su poslednje recenzije vec ugnjezdene u dokument hotela:
+
+```js
+recent_reviews
+recent_average_score
+```
+
+To je sablon podskupa: ne cuvaju se sve recenzije u hotel dokumentu, nego samo poslednjih 10 recenzija.
+
+Koriscen je indeks:
+
+```js
+idx_hotels_city_reliability
+```
+
+## Kod upita
+
+```js
 
 db.v2_hotels_guest.aggregate([
   {
@@ -27,3 +46,12 @@ db.v2_hotels_guest.aggregate([
     }
   }
 ])
+```
+
+## Vreme izvrsavanja
+
+Vreme izvrsavanja iz: **0 ms**.
+
+## Explain plan
+
+![Explain plan](image.png)

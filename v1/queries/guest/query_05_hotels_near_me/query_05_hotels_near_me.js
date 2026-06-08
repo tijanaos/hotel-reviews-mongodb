@@ -1,3 +1,11 @@
+// Top 10 hotela sa prosecnom ocenom vecom od 8 se nalaze u krugu od 100 kilometara od moje trenutne lokacije? 
+// Koristi se Haversine formula
+// distance = R * 2 * asin(sqrt(sin²(deltaLat / 2)+cos(lat1) * cos(lat2) * sin²(deltaLng / 2)))
+// lat 1, lng 1 - lokacija gosta
+// lat 2, lng 2 - lokacija hotela
+// deltaLat - razlika u latitude
+// deltaLng - razlika u longitude
+
 db.v1_hotels.aggregate([
   {
     $match: {

@@ -1,3 +1,7 @@
+// Koji hoteli u izabranom gradu imaju visoku prosecnu ocenu i barem 100 recenzija.
+// za reliability score koriscena formula Bayesian Average
+// review_count / (review_count + 100) * hotel_average + 100 / (review_count + 100) * city_average
+
 db.v1_reviews.aggregate(
 [
   {

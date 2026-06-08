@@ -1,6 +1,35 @@
-// Q2 — Top hotels for a specific guest type in a city
-// v1: $lookup + $match on tags (raw string) + $group
-// v2: $match on embedded hotel.city + classified guest_types array on v2_reviews_guest
+# Q2 - Hoteli po tipu gostiju
+
+## Sta ubrzava upit
+
+U `v2` recenzija sadrzi prosirenu referencu na hotel:
+
+```js
+hotel: {
+  name,
+  address,
+  city,
+  country
+}
+```
+
+Pored toga, tip gosta je unapred izveden iz `tags` i sacuvan u polju:
+
+```js
+guest_types
+```
+
+Zbog toga upit moze direktno da filtrira po `hotel.city` i `guest_types`, bez lookup-a i bez parsiranja tagova u toku izvrsavanja.
+
+Koristi se multikey compound indeks:
+
+```js
+idx_reviews_city_guest_types
+```
+
+## Kod upita
+
+```js
 
 db.v2_reviews_guest.aggregate([
   {
@@ -48,3 +77,15 @@ db.v2_reviews_guest.aggregate([
     }
   }
 ])
+```
+
+## Vreme izvrsavanja
+
+Vreme izvrsavanja: **97 ms**.
+
+Explain plan pokazuje koriscenje `idx_reviews_city_guest_types`.
+
+## Explain plan
+
+![Explain plan 1](image.png)
+![Explain plan 2](image-1.png)

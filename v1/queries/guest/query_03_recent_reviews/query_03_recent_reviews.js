@@ -1,3 +1,5 @@
+// Koje su najnovije recenzije(poslednjih 10) izabranog hotela i kakvu prosečnu ocenu hotel ima u skorijem periodu?
+
 db.v1_reviews.aggregate([
   {
     $lookup: {

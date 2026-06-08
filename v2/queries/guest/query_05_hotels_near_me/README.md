@@ -1,8 +1,20 @@
-// Q5 — Hotels within 100km of user location, min score 8.0, sorted by distance
-// v1: manual Haversine formula in $addFields on v1_hotels
-// v2: $geoNear with 2dsphere index on v2_hotels_guest → native geospatial query, no manual math
+# Q5 - Hoteli u mojoj blizini
 
-// Coordinates: Milan [lng, lat] = [9.1900, 45.4642]
+## Sta ubrzava upit
+
+Upit je ubrzan geospatial indeksom. 
+U `v2_hotels_guest` je `average_reviewer_score` vec sacuvan u dokumentu hotela, pa nema potrebe za lookup-om ka recenzijama.
+
+Koristi se `2dsphere` indeks:
+
+```js
+idx_hotels_location_2dsphere
+```
+
+## Kod upita
+
+```js
+
 db.v2_hotels_guest.aggregate([
   {
     $geoNear: {
@@ -37,3 +49,14 @@ db.v2_hotels_guest.aggregate([
     }
   }
 ])
+```
+
+## Vreme izvrsavanja
+
+Vreme izvrsavanja: **4 ms**.
+
+Explain plan pokazuje koriscenje indeksa `idx_hotels_location_2dsphere`.
+
+## Explain plan
+
+![Explain plan](image.png)

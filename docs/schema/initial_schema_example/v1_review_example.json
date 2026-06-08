@@ -1,0 +1,18 @@
+{
+  "_id": { "$oid": "64b2a3c4d5e6f7a8b9c0d2e3" },
+  "hotel_id": { "$oid": "64a1f2b3c4d5e6f7a8b9c0d1" },
+  "review_date": { "$date": "2017-05-15T00:00:00Z" },
+  "reviewer_nationality": "United Kingdom",
+  "reviewer_score": 9.2,
+  "positive_review": "Fantastic location, very friendly staff and beautifully designed rooms. Breakfast was excellent.",
+  "negative_review": "Room was a bit small but perfectly functional.",
+  "positive_word_count": 16,
+  "negative_word_count": 9,
+  "tags": [
+    "Leisure trip",
+    "Couple",
+    "Stayed 2 nights",
+    "Submitted from a mobile device"
+  ],
+  "total_number_of_reviews_reviewer_has_given": 7
+}

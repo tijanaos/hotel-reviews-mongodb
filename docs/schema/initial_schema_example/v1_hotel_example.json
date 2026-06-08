@@ -1,0 +1,13 @@
+{
+  "_id": { "$oid": "64a1f2b3c4d5e6f7a8b9c0d1" },
+  "name": "Hotel Arena",
+  "address": "'s-Gravesandestraat 51 Oost, 1092 AA Amsterdam, Netherlands",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "average_score": 8.8,
+  "total_number_of_reviews": 1403,
+  "location": {
+    "type": "Point",
+    "coordinates": [4.9157, 52.3626]
+  }
+}

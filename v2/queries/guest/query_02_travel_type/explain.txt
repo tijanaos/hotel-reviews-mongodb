@@ -78,13 +78,13 @@
                 "executionStats" : {
                     "executionSuccess" : true,
                     "nReturned" : 29347,
-                    "executionTimeMillis" : 97,
+                    "executionTimeMillis" : 90,
                     "totalKeysExamined" : 29347,
                     "totalDocsExamined" : 29347,
                     "executionStages" : {
                         "stage" : "PROJECTION_DEFAULT",
                         "nReturned" : 29347,
-                        "executionTimeMillisEstimate" : 23,
+                        "executionTimeMillisEstimate" : 11,
                         "works" : 29348,
                         "advanced" : 29347,
                         "needTime" : 0,
@@ -104,7 +104,7 @@
                         "inputStage" : {
                             "stage" : "FETCH",
                             "nReturned" : 29347,
-                            "executionTimeMillisEstimate" : 9,
+                            "executionTimeMillisEstimate" : 7,
                             "works" : 29348,
                             "advanced" : 29347,
                             "needTime" : 0,
@@ -117,7 +117,7 @@
                             "inputStage" : {
                                 "stage" : "IXSCAN",
                                 "nReturned" : 29347,
-                                "executionTimeMillisEstimate" : 5,
+                                "executionTimeMillisEstimate" : 4,
                                 "works" : 29348,
                                 "advanced" : 29347,
                                 "needTime" : 0,
@@ -162,7 +162,7 @@
                 }
             },
             "nReturned" : 29347,
-            "executionTimeMillisEstimate" : 89
+            "executionTimeMillisEstimate" : 79
         },
         {
             "$group" : {
@@ -203,7 +203,7 @@
             "numBytesSpilledEstimate" : 0,
             "spilledRecords" : 0,
             "nReturned" : 105,
-            "executionTimeMillisEstimate" : 96
+            "executionTimeMillisEstimate" : 89
         },
         {
             "$match" : {
@@ -212,7 +212,7 @@
                 }
             },
             "nReturned" : 103,
-            "executionTimeMillisEstimate" : 96
+            "executionTimeMillisEstimate" : 89
         },
         {
             "$sort" : {
@@ -227,7 +227,7 @@
             "spills" : 0,
             "spilledDataStorageSize" : 0,
             "nReturned" : 10,
-            "executionTimeMillisEstimate" : 96
+            "executionTimeMillisEstimate" : 89
         },
         {
             "$project" : {
@@ -251,11 +251,11 @@
                 "_id" : false
             },
             "nReturned" : 10,
-            "executionTimeMillisEstimate" : 96
+            "executionTimeMillisEstimate" : 89
         }
     ],
     "serverInfo" : {
-        "host" : "0b4c35b42167",
+        "host" : "56ae00cafb23",
         "port" : 27017,
         "version" : "7.0.34",
         "gitVersion" : "ed9a6630253d3bc301e5ef19606704715d1e2066"
